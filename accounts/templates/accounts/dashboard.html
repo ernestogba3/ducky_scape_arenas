@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block main %}
+{% if user.is_authenticated and user.profile_user.role == 'ADMIN' %}
+ 
+    <h1>Dashboard</h1>
+    <p>Admin Panel</p>
+{% else %}
+    <p>No eres Adin para acceder  Panel</p>
+
+ {% endif %}
+
+{% endblock main %}

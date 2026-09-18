@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Crear cuenta | Ducky Arena{% endblock %}
+
+{% block main %}
+<section class="auth-shell">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <span class="brand-mark">DQ</span>
+            <div>
+                <small>DUCKY QUIZ ARENAS</small>
+                <strong>Registro</strong>
+            </div>
+        </div>
+
+        <h1>Crear cuenta</h1>
+        <p class="auth-subtitle">Únete a la arena y empieza a competir con estilo.</p>
+
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn primary auth-submit">
+                Registrarse
+            </button>
+        </form>
+
+        <p class="auth-signup">
+            ¿Ya tienes una cuenta?
+            <a href="{% url 'accounts:login' %}">Iniciar sesión</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ducky Quiz Arenas</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="{% if request.path|slice:':9' == '/accounts/' %}auth-page{% endif %}">
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Ducky Quiz Arenas">
+      <span class="brand-mark">DQ</span>
+      <span><strong>DUCKY</strong><small>QUIZ ARENAS</small></span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+    <nav class="nav" id="mainNav">
+      <a href="#inicio" class="active">Inicio</a>
+      <a href="#quizzes">Quizzes</a>
+      <a href="#ducky">Mi Ducky</a>
+      <a href="#shop">Tienda</a>
+      <a href="#challenges">Retos</a>
+      <a href="#arena">Arena</a>
+
+      
+    </nav>
+    {% if request.user.is_authenticated %}
+    <button class="profile-button" id="profileButton">
+      <span class="avatar">DM</span>
+      <span class="profile-copy"><strong>{{ request.user.username }}</strong><small>Alumno · Nv. 5</small></span>
+    </button>
+    <a href="{% url 'accounts:logout' %}" class="btn auth-btn secondary">Salir</a>
+
+    {% else %}
+    <div class="auth-actions">
+      <a href="{% url 'accounts:login' %}" class="btn auth-btn secondary">Login</a>
+      <a href="{% url 'accounts:register' %}" class="btn auth-btn primary">Register</a>
+    </div>
+    {% endif %}
+
+    
+  </header>
+{% block main %}
+{% endblock %}  
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">APRENDE · COMPITE · GANA</span>
+        <h1>Bienvenido a <span>Ducky Quiz Arenas</span></h1>
+        <p>Aprende jugando, compite con tus compañeros y personaliza tu Ducky mientras subes de nivel.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#jugar">Entrar a la arena</a>
+          <a class="btn secondary" href="#quizzes">Ver quizzes</a>
+        </div>
+      </div>
+
+      <div class="ducky-stage" aria-label="Zona visual del Ducky">
+        <div class="glow"></div>
+        <div class="duck">🦆</div>
+        <div class="level-chip">NIVEL 5</div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Resumen de jugador">
+      <article><span>⚡</span><div><small>Experiencia</small><strong>2.450 XP</strong></div></article>
+      <article><span>🏆</span><div><small>Ranking</small><strong>#12</strong></div></article>
+      <article><span>🪙</span><div><small>Ducky Coins</small><strong>1.200</strong></div></article>
+      <article><span>🎯</span><div><small>Retos ganados</small><strong>18</strong></div></article>
+    </section>
+
+    <section class="section" id="jugar">
+      <div class="section-heading">
+        <div><span class="eyebrow">MODOS DE JUEGO</span><h2>¿Qué quieres hacer?</h2></div>
+      </div>
+
+      <div class="game-grid">
+        <article class="game-card featured" id="quizzes">
+          <div class="icon">?</div>
+          <span class="tag">QUIZ ARENA</span>
+          <h3>Partidas grupales</h3>
+          <p>Entra con un código, responde preguntas y compite por el primer puesto.</p>
+          <div class="card-actions">
+            <button class="btn primary" data-modal="joinGame">Unirse a partida</button>
+            <button class="text-btn">Ver quizzes →</button>
+          </div>
+        </article>
+
+        <article class="game-card" id="arena">
+          <div class="icon">⚔</div>
+          <span class="tag">BATTLE ARENA</span>
+          <h3>Duelo 1 contra 1</h3>
+          <p>Reta a otro jugador y resuelve un challenge para demostrar quién domina el código.</p>
+          <div class="card-actions">
+            <button class="btn primary" data-toast="Buscando rivales disponibles…">Buscar rival</button>
+            <button class="text-btn">Historial →</button>
+          </div>
+        </article>
+        <article  id="formularios">
+            hola
+        </article>
+
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div><span class="eyebrow">TU UNIVERSO</span><h2>Progresa y personaliza</h2></div>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card" id="ducky">
+          <div class="feature-icon">🦆</div>
+          <h3>Mi Ducky</h3>
+          <p>Consulta tu personaje, inventario y objetos equipados.</p>
+          <a href="#">Personalizar →</a>
+        </article>
+        <article class="feature-card" id="shop">
+          <div class="feature-icon">🛍</div>
+          <h3>Ducky Shop</h3>
+          <p>Usa tus Ducky Coins para conseguir nuevos objetos.</p>
+          <a href="#">Ir a la tienda →</a>
+        </article>
+        <article class="feature-card" id="challenges">
+          <div class="feature-icon">&lt;/&gt;</div>
+          <h3>Challenges</h3>
+          <p>Practica Python, SQL, Regex, HTML, CSS, JavaScript y lógica.</p>
+          <a href="#">Ver retos →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section activity">
+      <div class="section-heading">
+        <div><span class="eyebrow">ACTIVIDAD</span><h2>Últimos resultados</h2></div>
+        <button class="text-btn">Ver todo →</button>
+      </div>
+      <div class="activity-list">
+        <div><span class="result win">VICTORIA</span><strong>Battle Arena · Regex</strong><small>+120 XP · +60 🪙</small></div>
+        <div><span class="result quiz">QUIZ</span><strong>Python básico · 2º puesto</strong><small>+90 XP · +35 🪙</small></div>
+        <div><span class="result challenge">RETO</span><strong>Consultas SQL</strong><small>Completado · +50 XP</small></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Ducky Quiz Arenas</strong>
+    <span>Aprende · Compite · Gana</span>
+  </footer>
+
+  <div class="modal" id="joinGame" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" aria-label="Cerrar">×</button>
+      <span class="eyebrow">QUIZ ARENA</span>
+      <h2>Unirse a una partida</h2>
+      <p>Introduce el código de 6 dígitos proporcionado por tu profesor.</p>
+      <form id="joinForm">
+        <label for="gameCode">Código de partida</label>
+        <input id="gameCode" inputmode="numeric" maxlength="6" placeholder="483921" required>
+        <button class="btn primary" type="submit">Entrar al lobby</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

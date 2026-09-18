@@ -1,0 +1,41 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Django
+*.log
+*.sqlite3
+/db.sqlite3
+
+# Media / uploads
+media/
+avatars/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# Variables de entorno
+.env
+.env.*
+
+# Migrations generadas (opcional si no quieres versionarlas)
+# */migrations/*.py
+# !*/migrations/__init__.py

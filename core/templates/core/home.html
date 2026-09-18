@@ -1,0 +1,805 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    Ducky Arena | Aprende · Compite · Gana
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<section class="hero">
+
+    <!-- DECORACIÓN -->
+
+    <div class="hero-glow hero-glow-purple"></div>
+    <div class="hero-glow hero-glow-yellow"></div>
+
+
+    <!-- =================================================
+         CONTENIDO IZQUIERDA
+    ================================================== -->
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+
+            QUIZ · CODE · COMPETE
+        </div>
+
+
+        <h1 class="hero-title">
+
+            APRENDE.
+
+            <span class="gradient-text">
+                COMPITE.
+            </span>
+
+            <span class="yellow-text">
+                GANA.
+            </span>
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            Pon a prueba tus conocimientos,
+            desafía a tus compañeros y demuestra
+            quién domina la arena.
+
+            Quizzes, retos de programación,
+            Duckies, recompensas y competición
+            en una única plataforma.
+
+        </p>
+
+
+        <!-- CTA -->
+
+        <div class="hero-actions">
+
+            {% if user.is_authenticated %}
+
+                <a
+                    href="{% url 'core:dashboard' %}"
+                    class="hero-btn hero-btn-primary"
+                >
+                    <span>
+                        ENTRAR A LA ARENA
+                    </span>
+
+                    <span class="btn-arrow">
+                        →
+                    </span>
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{% url 'accounts:register' %}"
+                    class="hero-btn hero-btn-primary"
+                >
+                    <span>
+                        EMPEZAR AHORA
+                    </span>
+
+                    <span class="btn-arrow">
+                        →
+                    </span>
+                </a>
+
+
+                <a
+                    href="{% url 'accounts:login' %}"
+                    class="hero-btn hero-btn-secondary"
+                >
+                    INICIAR SESIÓN
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- MINI STATS -->
+
+        <div class="hero-stats">
+
+            <div class="hero-stat">
+
+                <strong>
+                    6
+                </strong>
+
+                <span>
+                    MODOS
+                </span>
+
+            </div>
+
+
+            <div class="stat-divider"></div>
+
+
+            <div class="hero-stat">
+
+                <strong>
+                    ∞
+                </strong>
+
+                <span>
+                    RETOS
+                </span>
+
+            </div>
+
+
+            <div class="stat-divider"></div>
+
+
+            <div class="hero-stat">
+
+                <strong>
+                    1
+                </strong>
+
+                <span>
+                    CAMPEÓN
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         CONTENIDO DERECHA
+    ================================================== -->
+
+    <div class="hero-visual">
+
+        <div class="arena-orbit orbit-one"></div>
+        <div class="arena-orbit orbit-two"></div>
+
+
+        <div class="ducky-card">
+
+            <div class="ducky-card-top">
+
+                <span class="online-indicator"></span>
+
+                ARENA ONLINE
+
+            </div>
+
+
+            <!--
+                Cuando tengamos la imagen oficial
+                del Ducky podremos sustituir
+                este bloque por:
+
+                <img
+                    src="{% static 'images/ducky/hero-ducky.png' %}"
+                    alt="Ducky Arena"
+                >
+            -->
+
+            <div class="ducky-placeholder">
+
+                <div class="ducky-crown">
+                    ♛
+                </div>
+
+                <div class="ducky-icon">
+                    DUCKY
+                </div>
+
+                <div class="ducky-level">
+                    LVL 99
+                </div>
+
+            </div>
+
+
+            <div class="ducky-card-info">
+
+                <div>
+
+                    <small>
+                        CURRENT MODE
+                    </small>
+
+                    <strong>
+                        QUIZ ARENA
+                    </strong>
+
+                </div>
+
+
+                <div class="live-tag">
+                    LIVE
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FLOATING CODE -->
+
+        <div class="floating-code">
+
+            <span class="code-purple">
+                &lt;
+            </span>
+
+            code
+
+            <span class="code-cyan">
+                /
+            </span>
+
+            <span class="code-purple">
+                &gt;
+            </span>
+
+        </div>
+
+
+        <!-- FLOATING QUESTION -->
+
+        <div class="floating-question">
+            ?
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     GAME MODES
+====================================================== -->
+
+<section class="game-modes">
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-label">
+                ELIGE TU CAMPO DE BATALLA
+            </span>
+
+            <h2>
+                TODO EMPIEZA AQUÍ
+            </h2>
+
+        </div>
+
+
+        <p>
+
+            Aprende jugando, personaliza tu Ducky
+            y enfréntate a otros jugadores.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="mode-grid">
+
+
+        <!-- =============================================
+             QUIZZES
+        ============================================== -->
+
+        <article class="mode-card">
+
+            <div class="mode-number">
+                01
+            </div>
+
+            <div class="mode-icon">
+                ?
+            </div>
+
+            <h3>
+                QUIZZES
+            </h3>
+
+            <p>
+
+                Pon a prueba tus conocimientos
+                con preguntas creadas por tus
+                profesores.
+
+            </p>
+
+            <span class="mode-status">
+                KNOWLEDGE
+            </span>
+
+        </article>
+
+
+
+        <!-- =============================================
+             QUIZ GAMES
+        ============================================== -->
+
+        <article class="mode-card">
+
+            <div class="mode-number">
+                02
+            </div>
+
+            <div class="mode-icon">
+                ▶
+            </div>
+
+            <h3>
+                QUIZ GAMES
+            </h3>
+
+            <p>
+
+                Únete mediante un código,
+                responde rápido y escala
+                posiciones en el ranking.
+
+            </p>
+
+            <span class="mode-status">
+                MULTIPLAYER
+            </span>
+
+        </article>
+
+
+
+        <!-- =============================================
+             DUCKY
+        ============================================== -->
+
+        <article class="mode-card featured-mode">
+
+            <div class="mode-number">
+                03
+            </div>
+
+            <div class="mode-icon duck-icon">
+                ◆
+            </div>
+
+            <h3>
+                MI DUCKY
+            </h3>
+
+            <p>
+
+                Crea tu identidad dentro de la arena.
+                Consigue objetos y equipa a tu
+                Ducky.
+
+            </p>
+
+            <span class="mode-status">
+                CUSTOMIZE
+            </span>
+
+        </article>
+
+
+
+        <!-- =============================================
+             SHOP
+        ============================================== -->
+
+        <article class="mode-card">
+
+            <div class="mode-number">
+                04
+            </div>
+
+            <div class="mode-icon">
+                ◈
+            </div>
+
+            <h3>
+                DUCKY SHOP
+            </h3>
+
+            <p>
+
+                Utiliza tus Ducky Coins para
+                desbloquear nuevos objetos
+                y personalizaciones.
+
+            </p>
+
+            <span class="mode-status">
+                REWARDS
+            </span>
+
+        </article>
+
+
+
+        <!-- =============================================
+             CHALLENGES
+        ============================================== -->
+
+        <article class="mode-card">
+
+            <div class="mode-number">
+                05
+            </div>
+
+            <div class="mode-icon code-icon">
+                &lt;/&gt;
+            </div>
+
+            <h3>
+                CODE CHALLENGES
+            </h3>
+
+            <p>
+
+                Resuelve desafíos de Python,
+                SQL, Regex, JavaScript,
+                lógica y desarrollo web.
+
+            </p>
+
+            <span class="mode-status">
+                CODE
+            </span>
+
+        </article>
+
+
+
+        <!-- =============================================
+             ARENA
+        ============================================== -->
+
+        <article class="mode-card arena-mode">
+
+            <div class="mode-number">
+                06
+            </div>
+
+            <div class="mode-icon">
+                ⚡
+            </div>
+
+            <h3>
+                ARENA 1 VS 1
+            </h3>
+
+            <p>
+
+                Desafía a otro jugador,
+                resuelve el reto y demuestra
+                quién domina el código.
+
+            </p>
+
+            <span class="mode-status live">
+                COMPETE
+            </span>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     HOW IT WORKS
+====================================================== -->
+
+<section class="how-it-works">
+
+    <div class="section-heading centered">
+
+        <span class="section-label">
+            TU CAMINO
+        </span>
+
+        <h2>
+            DE ROOKIE A CAMPEÓN
+        </h2>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">
+                01
+            </div>
+
+            <div class="step-line"></div>
+
+            <h3>
+                APRENDE
+            </h3>
+
+            <p>
+                Participa en quizzes y
+                resuelve retos.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                02
+            </div>
+
+            <div class="step-line"></div>
+
+            <h3>
+                GANA XP
+            </h3>
+
+            <p>
+                Mejora tu nivel mientras
+                progresas.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                03
+            </div>
+
+            <div class="step-line"></div>
+
+            <h3>
+                CONSIGUE COINS
+            </h3>
+
+            <p>
+                Obtén recompensas por
+                tus logros.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                04
+            </div>
+
+            <h3>
+                DOMINA LA ARENA
+            </h3>
+
+            <p>
+                Desafía a otros jugadores
+                y alcanza la cima.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CODE TERMINAL
+====================================================== -->
+
+<section class="terminal-section">
+
+    <div class="terminal">
+
+        <div class="terminal-header">
+
+            <div class="terminal-dots">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+            <span>
+                ducky@arena:~
+            </span>
+
+        </div>
+
+
+        <div class="terminal-body">
+
+            <p>
+                <span class="terminal-user">
+                    ducky@arena
+                </span>
+
+                <span class="terminal-symbol">
+                    $
+                </span>
+
+                python challenge.py
+            </p>
+
+
+            <p class="terminal-output">
+                Loading challenge...
+            </p>
+
+
+            <p class="terminal-output">
+                Opponent found.
+            </p>
+
+
+            <p class="terminal-output success-output">
+                ARENA READY.
+            </p>
+
+
+            <p class="terminal-cursor-line">
+
+                <span class="terminal-user">
+                    ducky@arena
+                </span>
+
+                <span class="terminal-symbol">
+                    $
+                </span>
+
+                <span class="terminal-cursor"></span>
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="terminal-content">
+
+        <span class="section-label">
+            PROGRAMMING ARENA
+        </span>
+
+        <h2>
+            TU CÓDIGO.<br>
+            TU ESTRATEGIA.<br>
+
+            <span class="gradient-text">
+                TU VICTORIA.
+            </span>
+        </h2>
+
+
+        <p>
+
+            Python, SQL, Regex, lógica,
+            HTML, CSS y JavaScript.
+
+            Resuelve desafíos,
+            mejora tus habilidades
+            y compite contra tus compañeros.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FINAL CTA
+====================================================== -->
+
+<section class="final-cta">
+
+    <div class="final-cta-glow"></div>
+
+
+    <div class="final-cta-content">
+
+        <span class="section-label">
+            DUCKY ARENA
+        </span>
+
+        <h2>
+            ¿ESTÁS LISTO<br>
+            PARA EL RETO?
+        </h2>
+
+
+        <p>
+
+            Entra en la arena,
+            demuestra lo que sabes
+            y conviértete en el próximo campeón.
+
+        </p>
+
+
+        {% if user.is_authenticated %}
+
+            <a
+                href="{% url 'core:dashboard' %}"
+                class="hero-btn hero-btn-primary"
+            >
+                ENTRAR A LA ARENA
+
+                <span>
+                    →
+                </span>
+            </a>
+
+        {% else %}
+
+            <a
+                href="{% url 'accounts:register' %}"
+                class="hero-btn hero-btn-primary"
+            >
+                CREAR MI CUENTA
+
+                <span>
+                    →
+                </span>
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="final-cta-code">
+
+        <span>
+            &lt;DUCKY&gt;
+        </span>
+
+        <strong>
+            READY
+        </strong>
+
+        <span>
+            &lt;/ARENA&gt;
+        </span>
+
+    </div>
+
+</section>
+
+{% endblock %}

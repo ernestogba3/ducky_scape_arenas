@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Salir | Ducky Arena{% endblock %}
+
+{% block main %}
+<section class="auth-shell">
+    <div class="panel">
+        <h1>Sesión cerrada</h1>
+        <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit">
+                Cerrar sesión
+            </button>
+        </form>
+
+        <a href="{% url 'accounts:profile' %}">
+            Cancelar
+        </a>
+        <p>Has salido correctamente.</p>
+    </div>
+</section>
+{% endblock %}

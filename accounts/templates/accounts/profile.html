@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Perfil | Ducky Arena{% endblock %}
+
+{% block main %}
+<section class="auth-shell">
+    <div class="panel profile-panel">
+        <h1>Perfil de {{ request.user.username }}</h1>
+
+        <div class="profile-actions">
+            <form method="POST" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn secondary">
+                    Cerrar sesión
+                </button>
+            </form>
+
+            <form method="POST" action="{% url 'accounts:delete_account' %}" onsubmit="return confirm('¿Seguro que quieres eliminar tu cuenta y tu perfil asociado? Esta acción no se puede deshacer.');">
+                {% csrf_token %}
+                <button type="submit" class="btn danger">
+                    Eliminar cuenta
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
