@@ -1,3 +1,9 @@
+class StageAnswerForm(forms.Form):
+    answer = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 4}),
+        max_length=2000,
+)
+
 class EscapeRoomForm(forms.ModelForm):
     class Meta:
         model = EscapeRoom
