@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -35,9 +38,6 @@ class EscapeRoom(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
-
-
 class EscapeStage(models.Model):
 
     class AnswerType(models.TextChoices):
@@ -46,10 +46,9 @@ class EscapeStage(models.Model):
         MULTIPLE_CHOICE = "MULTIPLE_CHOICE", "Opción"
         NORMALIZED_CODE = "NORMALIZED_CODE", "Código normalizado"
         REGEX_PATTERN = "REGEX_PATTERN", "Patrón Regex"
-
     class Meta:
-     ordering = ["order"]
-     constraints = [models.UniqueConstraint(fields=["room", "order"], name="unique_stage_order_per_room")]
+     ordering = ["order"]  # noqa: RUF012
+     constraints = [models.UniqueConstraint(fields=["room", "order"], name="unique_stage_order_per_room")]  # noqa: RUF012
     class Category(models.TextChoices):
         PYTHON = "PYTHON", "Python"
         DJANGO = "DJANGO", "Django"
@@ -75,10 +74,22 @@ class EscapeStage(models.Model):
     hint_penalty = models.PositiveIntegerField(default=25)
     max_attempts = models.PositiveIntegerField(default=0)
 
+class EscapeSession(models.Model):
 
+    @property
+    def deadline(self):
+        return self.started_at + timedelta(minutes=self.room.time_limit_minutes)
 
+    @property
+    def remaining_seconds(self):
+        return max(0, int((self.deadline - timezone.now()).total_seconds()))
 
-class EscapeSession(models.Model): 
+    @property
+    def is_expired(self):
+        return timezone.now() >= self.deadline
+
+    def get_current_stage(self):
+        return self.room.stages.filter(order=self.current_order).first()
     class Status(models.TextChoices): 
         ACTIVE = "ACTIVE", "En curso"
         COMPLETED = "COMPLETED", "Completada"
@@ -109,7 +120,7 @@ class EscapeHintUse(models.Model):
     used_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        constraints = [
+        constraints = [  # noqa: RUF012
             models.UniqueConstraint(
                 fields=["session", "stage"],
                 name="unique_hint_per_stage_session",
