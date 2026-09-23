@@ -7,6 +7,9 @@ from django.utils import timezone
 
 # Create your models here.
 class EscapeRoom(models.Model):
+
+    def __str__(self):
+        return self.title
     class Difficulty(models.TextChoices):
      EASY = "EASY", "Fácil"
      MEDIUM = "MEDIUM", "Media"
@@ -39,6 +42,9 @@ class EscapeRoom(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class EscapeStage(models.Model):
+
+    def __str__(self):
+        return f"{self.room.title} — {self.order}. {self.title}"
 
     class AnswerType(models.TextChoices):
         EXACT = "EXACT", "Respuesta exacta"
@@ -105,6 +111,9 @@ class EscapeSession(models.Model):
     wrong_attempts = models.PositiveIntegerField(default=0)
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.room.title} — {self.player} — {self.status}"
 
 class EscapeAttempt(models.Model):
     session = models.ForeignKey(EscapeSession, on_delete=models.CASCADE, related_name="attempts")
