@@ -9,8 +9,6 @@ from escape_arenas.models import (
 )
 
 # Register your models here.
-admin.site.register(EscapeRoom)
-admin.site.register(EscapeStage)
 admin.site.register(EscapeSession)
 admin.site.register(EscapeAttempt)
 admin.site.register(EscapeHintUse)

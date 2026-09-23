@@ -112,6 +112,9 @@ class EscapeSession(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.room.title} — {self.player} — {self.status}"
+
 class EscapeAttempt(models.Model):
     session = models.ForeignKey(EscapeSession, on_delete=models.CASCADE, related_name="attempts")
     stage = models.ForeignKey(EscapeStage, on_delete=models.PROTECT, related_name="attempts")
