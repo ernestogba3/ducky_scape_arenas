@@ -78,12 +78,7 @@ def delete_account_view(request):
         return redirect('accounts:login')
     return redirect('accounts:profile')
 
-@login_required
-def start_escape(request, slug):
-    room = get_object_or_404(EscapeRoom, slug=slug, is_published=True)
-    if request.method == "POST":
-        session = EscapeSession.objects.create(room=room, player=request.user)
-        return redirect("escape_arenas:play", pk=session.pk)
+
 
 def logout_view(request):
     if request.method == 'POST':
