@@ -1,27 +1,49 @@
 from django.contrib import admin
 
 from escape_arenas.models import (
-    EscapeAttempt,
-    EscapeHintUse,
-    EscapeRoom,
-    EscapeSession,
-    EscapeStage,
+    EscapeRoomSession,
+    PlayerProgress,
+    Room,
+    Stage,
+    StageAttempt,
 )
 
-# Register your models here.
-admin.site.register(EscapeSession)
-admin.site.register(EscapeAttempt)
-admin.site.register(EscapeHintUse)
 
-@admin.register(EscapeRoom)
-class EscapeRoomAdmin(admin.ModelAdmin):
-    list_display = ("title", "theme", "time_limit_minutes", "is_published", "creator")
-    list_filter = ("theme", "is_published")
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ("title", "order")
     search_fields = ("title", "description")
+    ordering = ("order",)
 
 
-@admin.register(EscapeStage)
-class EscapeStageAdmin(admin.ModelAdmin):
-    list_display = ("title", "room", "category", "points")
-    list_filter = ("room", "category")
+@admin.register(Stage)
+class StageAdmin(admin.ModelAdmin):
+    list_display = ("title", "room", "order")
+    list_filter = ("room",)
+    search_fields = ("title", "statement")
     ordering = ("room", "order")
+    list_select_related = ("room",)
+
+
+@admin.register(EscapeRoomSession)
+class EscapeRoomSessionAdmin(admin.ModelAdmin):
+    list_display = ("player", "status", "started_at", "finished_at", "time_limit_seconds")
+    list_filter = ("status",)
+    search_fields = ("player__username",)
+    ordering = ("-started_at",)
+    list_select_related = ("player",)
+
+
+@admin.register(PlayerProgress)
+class PlayerProgressAdmin(admin.ModelAdmin):
+    list_display = ("session", "current_room", "current_stage", "mistakes_count", "is_finished")
+    list_filter = ("is_finished", "current_room")
+    list_select_related = ("session__player", "current_room", "current_stage")
+
+
+@admin.register(StageAttempt)
+class StageAttemptAdmin(admin.ModelAdmin):
+    list_display = ("session", "stage", "started_at", "completed_at", "duration", "is_correct")
+    list_filter = ("is_correct", "stage__room")
+    ordering = ("-started_at",)
+    list_select_related = ("session__player", "stage__room")
