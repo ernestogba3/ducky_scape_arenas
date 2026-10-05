@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'core',
-    'escape_arenas',
+    'apps.escape_arenas',
 ]
 
 MIDDLEWARE = [

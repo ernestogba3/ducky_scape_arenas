@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from escape_arenas.models import (
+from apps.escape_arenas.models import (
     EscapeRoomSession,
     PlayerProgress,
     Room,
