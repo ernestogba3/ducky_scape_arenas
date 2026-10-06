@@ -1,37 +1,170 @@
-# escape_arenas/services.py
 from datetime import timedelta
 
+from django.db import transaction
 from django.utils import timezone
 
-from .models import AnswerType, EscapeSession
+from .models import (
+    EscapeAttempt,
+    EscapeHintUse,
+    EscapeSession,
+    Stage,
+)
+
+
+# ──────────────────────────────────────────────────────────────
+# Temporizador
+# ──────────────────────────────────────────────────────────────
+def get_deadline(session):
+    """Devuelve el instante límite de la sesión."""
+    return session.started_at + timedelta(
+        minutes=session.escape_room.time_limit_minutes
+    )
+
+
+def get_remaining_seconds(session):
+    """Segundos que quedan. 0 si ya caducó."""
+    remaining = (get_deadline(session) - timezone.now()).total_seconds()
+    return max(0, int(remaining))
 
 
 def expire_session_if_needed(session):
-    """Marca la sesión como FAILED si ha pasado el deadline. Devuelve True si caducó."""
-    deadline = session.started_at + timedelta(
-        minutes=session.room.time_limit_minutes
-    )
-    if timezone.now() >= deadline:
-        session.status = EscapeSession.Status.FAILED
-        session.finished_at = timezone.now()
-        session.save(update_fields=["status", "finished_at"])
-        return True
-    return False
+    """Marca FAILED si ha caducado. Devuelve True si expiró."""
+    if session.status != EscapeSession.Status.IN_PROGRESS:
+        return False
+    if get_remaining_seconds(session) > 0:
+        return False
+
+    session.status = EscapeSession.Status.FAILED
+    session.finished_at = timezone.now()
+    session.save(update_fields=["status", "finished_at"])
+    return True
 
 
-def normalize_code(text):
+# ──────────────────────────────────────────────────────────────
+# Validación de respuestas
+# ──────────────────────────────────────────────────────────────
+def normalize(text):
+    """Normalización mínima y predecible. No elimina caracteres arbitrariamente."""
     return text.strip().lower()
 
 
 def check_stage_answer(*, stage, submitted_answer):
-    expected = stage.expected_answer.strip()
-    submitted = submitted_answer.strip()
+    """Compara la respuesta del jugador con la esperada. El servidor decide."""
+    expected = normalize(stage.expected_answer)
+    submitted = normalize(submitted_answer)
+    return submitted == expected
 
-    if stage.answer_type == AnswerType.EXACT:
-        return submitted == expected
-    if stage.answer_type == AnswerType.CASE_INSENSITIVE:
-        return submitted.lower() == expected.lower()
-    if stage.answer_type == AnswerType.NORMALIZED_CODE:
-        return normalize_code(submitted) == normalize_code(expected)
-    return False
 
+# ──────────────────────────────────────────────────────────────
+# Avance de fase
+# ──────────────────────────────────────────────────────────────
+def _next_stage_in_room(session, room):
+    """Siguiente stage de la room actual, o None si no queda."""
+    return (
+        room.stages.filter(order__gt=session.current_stage.order)
+        .order_by("order")
+        .first()
+    )
+
+
+def _first_stage_of_room(room):
+    return room.stages.order_by("order").first()
+
+
+def _next_room(session):
+    """Siguiente room en orden, o None si no queda."""
+    return (
+        session.escape_room.rooms.filter(order__gt=session.current_room.order)
+        .order_by("order")
+        .first()
+    )
+
+
+def _first_room(session):
+    return session.escape_room.rooms.order_by("order").first()
+
+
+def advance_session(session, stage):
+    """
+    Avanza el puntero del jugador tras un acierto.
+    Devuelve True si la sesión se ha completado, False si sigue en curso.
+    """
+    with transaction.atomic():
+        session.score += stage.points
+
+        next_stage = _next_stage_in_room(session, stage.room)
+        if next_stage is not None:
+            session.current_stage = next_stage
+            session.save(update_fields=["score", "current_stage"])
+            return False
+
+        # Se acabaron los stages de esta room → siguiente room
+        next_room = _next_room(session)
+        if next_room is not None:
+            first_stage = _first_stage_of_room(next_room)
+            session.current_room = next_room
+            session.current_stage = first_stage
+            session.save(update_fields=["score", "current_room", "current_stage"])
+            return False
+
+        # No quedan rooms → COMPLETED
+        session.status = EscapeSession.Status.COMPLETED
+        session.finished_at = timezone.now()
+        session.save(update_fields=["score", "status", "finished_at"])
+        return True
+
+
+# ──────────────────────────────────────────────────────────────
+# Pistas
+# ──────────────────────────────────────────────────────────────
+def use_hint(session, stage):
+    """
+    Aplica una pista como máximo una vez por (session, stage).
+    Devuelve True si se ha aplicado, False si ya estaba usada.
+    """
+    if not stage.hint_text:
+        return False
+
+    hint_use, created = EscapeHintUse.objects.get_or_create(
+        session=session,
+        stage=stage,
+        defaults={"penalty": stage.hint_penalty},
+    )
+    if not created:
+        return False
+
+    session.score = max(0, session.score - stage.hint_penalty)
+    session.hints_used += 1
+    session.save(update_fields=["score", "hints_used"])
+    return True
+
+
+# ──────────────────────────────────────────────────────────────
+# Registro de intentos (correcto o incorrecto)
+# ──────────────────────────────────────────────────────────────
+def register_attempt(*, session, stage, answer, is_correct):
+    """Registra el intento y actualiza los contadores de la sesión."""
+    EscapeAttempt.objects.create(
+        session=session,
+        stage=stage,
+        submitted_answer=answer,
+        is_correct=is_correct,
+    )
+
+    if is_correct:
+        completed = advance_session(session, stage)
+        return {"is_correct": True, "completed": completed}
+
+    # Incorrecto: no avanza, incrementa errores
+    session.mistakes_count += 1
+    update_fields = ["mistakes_count"]
+
+    # Umbral de errores (ajustar la regla con el profesor)
+    MAX_MISTAKES = 5
+    if session.mistakes_count >= MAX_MISTAKES:
+        session.status = EscapeSession.Status.FAILED
+        session.finished_at = timezone.now()
+        update_fields += ["status", "finished_at"]
+
+    session.save(update_fields=update_fields)
+    return {"is_correct": False, "completed": False}
