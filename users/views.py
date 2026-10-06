@@ -79,6 +79,7 @@ def delete_account_view(request):
     return redirect('accounts:profile')
 
 
+
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
