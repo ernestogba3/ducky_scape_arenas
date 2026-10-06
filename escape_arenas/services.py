@@ -143,28 +143,48 @@ def use_hint(session, stage):
 # Registro de intentos (correcto o incorrecto)
 # ──────────────────────────────────────────────────────────────
 def register_attempt(*, session, stage, answer, is_correct):
-    """Registra el intento y actualiza los contadores de la sesión."""
-    EscapeAttempt.objects.create(
-        session=session,
-        stage=stage,
-        submitted_answer=answer,
-        is_correct=is_correct,
-    )
+    """
+    Registra el intento y actualiza la sesión de forma atómica.
+    Bloquea la fila de la sesión para evitar carreras.
+    """
+    with transaction.atomic():
+        # 1. Bloquear la sesión (evita submits simultáneos)
+        locked_session = (
+            EscapeSession.objects
+            .select_for_update()
+            .get(pk=session.pk)
+        )
 
-    if is_correct:
-        completed = advance_session(session, stage)
-        return {"is_correct": True, "completed": completed}
+        # 2. Si la sesión ya no está en curso, no hacemos nada
+        if locked_session.status != EscapeSession.Status.IN_PROGRESS:
+            return {"is_correct": False, "completed": False, "skipped": True}
 
-    # Incorrecto: no avanza, incrementa errores
-    session.mistakes_count += 1
-    update_fields = ["mistakes_count"]
+        # 3. Registrar el intento
+        EscapeAttempt.objects.create(
+            session=locked_session,
+            stage=stage,
+            submitted_answer=answer,
+            is_correct=is_correct,
+        )
 
-    # Umbral de errores (ajustar la regla con el profesor)
-    MAX_MISTAKES = 5
-    if session.mistakes_count >= MAX_MISTAKES:
-        session.status = EscapeSession.Status.FAILED
-        session.finished_at = timezone.now()
-        update_fields += ["status", "finished_at"]
+        # 4. Actualizar la sesión según acierto o fallo
+        if is_correct:
+            completed = advance_session(locked_session, stage)
+            # Refrescar el objeto que recibió la vista para que el caller
+            # vea el estado actualizado
+            session.refresh_from_db()
+            return {"is_correct": True, "completed": completed}
 
-    session.save(update_fields=update_fields)
-    return {"is_correct": False, "completed": False}
+        # Fallo
+        locked_session.mistakes_count += 1
+        update_fields = ["mistakes_count"]
+
+        MAX_MISTAKES = 5
+        if locked_session.mistakes_count >= MAX_MISTAKES:
+            locked_session.status = EscapeSession.Status.FAILED
+            locked_session.finished_at = timezone.now()
+            update_fields += ["status", "finished_at"]
+
+        locked_session.save(update_fields=update_fields)
+        session.refresh_from_db()
+        return {"is_correct": False, "completed": False}
