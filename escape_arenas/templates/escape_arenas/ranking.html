@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Ranking {{ room.title }} | Escape Arenas{% endblock %}
+
+{% block main %}
+<section class="escape-shell">
+    <h1>Ranking — {{ room.title }}</h1>
+    <p>Solo sesiones COMPLETED. Orden: score descendente, luego tiempo ascendente.</p>
+
+    <table class="escape-table">
+        <thead>
+            <tr><th>#</th><th>Jugador</th><th>Score</th><th>Duración</th></tr>
+        </thead>
+        <tbody>
+            {% for s in sessions %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ s.player.username }}</td>
+                    <td>{{ s.score }} pts</td>
+                    <td>{% if s.finished_at %}{{ s.finished_at|time:"H:i:s" }}{% else %}—{% endif %}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">Todavía no hay sesiones completadas.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

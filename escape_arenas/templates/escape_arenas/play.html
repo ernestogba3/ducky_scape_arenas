@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Jugando {{ session.room.title }} | Escape Arenas{% endblock %}
+
+{% block main %}
+<section class="escape-shell play-shell">
+    <header class="play-header">
+        <h1>{{ session.room.title }}</h1>
+        <p>Tiempo: <span id="timer" data-deadline="{{ deadline_iso }}">--:--</span></p>
+        <p>Progreso: {{ session.current_order }} / {{ session.room.stages.count }}</p>
+        <p>Score: {{ session.score }}</p>
+    </header>
+
+    {% if stage %}
+        <article class="stage-card">
+            <h2>Fase {{ stage.order }}: {{ stage.title }}</h2>
+            <p class="stage-statement">{{ stage.statement }}</p>
+
+            <form method="post" action="{% url 'escape_arenas:answer' session.pk %}" class="stage-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn primary">Enviar respuesta</button>
+            </form>
+
+            {% if stage.hint_text %}
+                <form method="post" action="{% url 'escape_arenas:hint' session.pk %}" class="hint-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn secondary">
+                        Usar pista (-{{ stage.hint_penalty }} pts)
+                    </button>
+                </form>
+            {% endif %}
+        </article>
+    {% else %}
+        <p>Esta sala no tiene fases todavía.</p>
+    {% endif %}
+</section>
+
+<script>
+  (function () {
+    const el = document.getElementById("timer");
+    if (!el) return;
+    const deadline = new Date(el.dataset.deadline).getTime();
+
+    function tick() {
+      const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+      const m = String(Math.floor(remaining / 60)).padStart(2, "0");
+      const s = String(remaining % 60).padStart(2, "0");
+      el.textContent = `${m}:${s}`;
+      if (remaining > 0) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = "00:00";
+      }
+    }
+    tick();
+  })();
+</script>
+{% endblock %}

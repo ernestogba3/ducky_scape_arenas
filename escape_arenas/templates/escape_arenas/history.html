@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Mis escapes | Escape Arenas{% endblock %}
+
+{% block main %}
+<section class="escape-shell">
+    <h1>Mis escapes</h1>
+
+    <table class="escape-table">
+        <thead>
+            <tr>
+                <th>Sala</th><th>Estado</th><th>Score</th>
+                <th>Inicio</th><th>Fin</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in sessions %}
+                <tr>
+                    <td>{{ s.room.title }}</td>
+                    <td>{{ s.get_status_display }}</td>
+                    <td>{{ s.score }} pts</td>
+                    <td>{{ s.started_at|date:"d/m/Y H:i" }}</td>
+                    <td>{% if s.finished_at %}{{ s.finished_at|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+                    <td><a href="{% url 'escape_arenas:result' s.pk %}">Ver</a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6">Aún no has jugado ninguna sala.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

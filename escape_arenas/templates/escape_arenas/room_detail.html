@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ room.title }} | Escape Arenas{% endblock %}
+
+{% block main %}
+<section class="escape-shell">
+    <article class="room-detail">
+        <h1>{{ room.title }}</h1>
+
+        {% if room.story %}
+            <p class="room-story">{{ room.story }}</p>
+        {% endif %}
+
+        <ul class="room-info">
+            <li><strong>Temática:</strong> {{ room.get_theme_display }}</li>
+            <li><strong>Dificultad:</strong> {{ room.get_difficulty_display }}</li>
+            <li><strong>Tiempo:</strong> {{ room.time_limit_minutes }} min</li>
+            <li><strong>Fases:</strong> {{ room.stages.count }}</li>
+            <li><strong>Recompensa:</strong> {{ room.reward_xp }} XP · {{ room.reward_coins }} coins</li>
+        </ul>
+
+        <p class="room-rules">
+            Reglas: cada respuesta se valida en el servidor. Las pistas aplican penalización.
+            Si el tiempo se agota, la sesión pasa a FAILED.
+        </p>
+
+        <div class="room-actions">
+            <a class="btn secondary" href="{% url 'escape_arenas:room_list' %}">Volver al catálogo</a>
+            <form method="post" action="{% url 'escape_arenas:start' room.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="btn primary">INICIAR ESCAPE</button>
+            </form>
+        </div>
+    </article>
+</section>
+{% endblock %}

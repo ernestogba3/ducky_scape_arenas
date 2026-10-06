@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Resultado | Escape Arenas{% endblock %}
+
+{% block main %}
+<section class="escape-shell result-shell">
+    <h1>Resultado de la partida</h1>
+
+    <p><strong>Sala:</strong> {{ session.room.title }}</p>
+    <p><strong>Estado:</strong> {{ session.get_status_display }}</p>
+    <p><strong>Score:</strong> {{ session.score }}</p>
+    <p><strong>Fases superadas:</strong> {{ session.current_order|add:"-1" }} / {{ session.room.stages.count }}</p>
+
+    {% if session.status == 'COMPLETED' %}
+        <p class="result-ok">¡Has escapado! Recompensa: {{ session.room.reward_xp }} XP · {{ session.room.reward_coins }} coins.</p>
+    {% elif session.status == 'FAILED' %}
+        <p class="result-fail">Se agotó el tiempo. La sala ha quedado bloqueada.</p>
+    {% elif session.status == 'ABANDONED' %}
+        <p class="result-fail">Abandonaste la partida.</p>
+    {% endif %}
+
+    <div class="room-actions">
+        <a class="btn secondary" href="{% url 'escape_arenas:room_list' %}">Volver al catálogo</a>
+        <a class="btn primary" href="{% url 'escape_arenas:history' %}">Mi historial</a>
+    </div>
+</section>
+{% endblock %}

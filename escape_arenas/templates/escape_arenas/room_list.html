@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Escape Arenas | Ducky Arena{% endblock %}
+
+{% block main %}
+<section class="escape-shell">
+    <header class="escape-header">
+        <h1>Ducky Escape Arenas</h1>
+        <p>Piensa · Resuelve · Desbloquea · Escapa</p>
+    </header>
+
+    <form method="get" class="escape-filters">
+        <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Buscar sala...">
+
+        <select name="theme">
+            <option value="">Todas las temáticas</option>
+            {% for value, label in themes %}
+                <option value="{{ value }}" {% if value == current_theme %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="difficulty">
+            <option value="">Todas las dificultades</option>
+            {% for value, label in difficulties %}
+                <option value="{{ value }}" {% if value == current_difficulty %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn primary">Filtrar</button>
+    </form>
+
+    <div class="room-grid">
+        {% for room in rooms %}
+            <article class="room-card">
+                <h2>{{ room.title }}</h2>
+                <p class="room-meta">
+                    {{ room.get_theme_display }} · {{ room.get_difficulty_display }}
+                </p>
+                <p class="room-meta">
+                    {{ room.time_limit_minutes }} min · {{ room.stages.count }} fases ·
+                    {{ room.reward_xp }} XP · {{ room.reward_coins }} coins
+                </p>
+                <p class="room-desc">{{ room.description|truncatechars:120 }}</p>
+
+                <div class="room-actions">
+                    <a class="btn secondary"
+                    href="{% url 'escape_arenas:room_detail' room.slug %}">
+                        Ver detalle
+                    </a>
+                    <form method="post" action="{% url 'escape_arenas:start' room.slug %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn primary">Jugar</button>
+                    </form>
+                </div>
+            </article>
+        {% empty %}
+            <p>No hay salas publicadas todavía.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

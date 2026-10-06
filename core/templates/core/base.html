@@ -45,6 +45,13 @@
 {% block main %}
 {% endblock %}  
   <main id="inicio">
+    {% if messages %}
+    <ul class="messages">
+      {% for m in messages %}
+        <li class="{{ m.tags }}">{{ m }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <section class="hero">
       <div class="hero-copy">
         <span class="eyebrow">APRENDE · COMPITE · GANA</span>
