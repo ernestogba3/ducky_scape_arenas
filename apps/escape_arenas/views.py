@@ -177,10 +177,7 @@ def escape_hint(request, pk):
     if stage is None:
         return redirect("escape_arenas:play", pk=session.pk)
 
-    hint = (
-        Hint.objects.filter(puzzle__stage=stage).order_by("order").first()
-        or Hint.objects.filter(room=stage.room).order_by("order").first()
-    )
+    hint = get_available_hint(session, stage)
 
     if hint is None:
         messages.warning(request, "No hay pistas disponibles para esta prueba.")
