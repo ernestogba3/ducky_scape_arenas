@@ -1,3 +1,6 @@
-# Entorno comprobado: Python 3.12 y Django 5.2 LTS
-Django>=5.2,<5.3
-Pillow>=10.4,<13
+asgiref==3.12.1
+Django==6.1.1
+djangorestframework==3.18.1
+pillow==12.3.0
+sqlparse==0.6.0
+tzdata==2026.4
