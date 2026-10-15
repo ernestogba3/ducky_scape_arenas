@@ -200,3 +200,49 @@ class HintForm(forms.ModelForm):
         if value < 0:
             raise forms.ValidationError("La penalización de puntos no puede ser negativa.")
         return value
+class StageForm(forms.ModelForm):
+    """Formulario para crear/editar una Stage dentro de una Room."""
+
+    class Meta:
+        model = Stage
+        fields = [
+            "room",
+            "name",
+            "description",
+            "order",
+            "type",
+            "completion_condition",
+            "time_limit",
+            "fragment",
+        ]
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 4}),
+            "completion_condition": forms.Textarea(attrs={"rows": 3}),
+            "fragment": forms.Textarea(attrs={"rows": 3}),
+        }
+        help_texts = {
+            "completion_condition": (
+                'JSON. Ej: {"require": "all_puzzles"} o '
+                '{"require": "n_puzzles", "n": 2}'
+            ),
+            "time_limit": "Segundos. Dejar vacío para usar el de la EscapeRoom.",
+            "fragment": "Fragmento que revela esta stage al completarse.",
+        }
+
+    def clean_order(self):
+        value = self.cleaned_data["order"]
+        if value < 1:
+            raise forms.ValidationError("El orden debe ser 1 o superior.")
+        return value
+
+    def clean_time_limit(self):
+        value = self.cleaned_data.get("time_limit")
+        if value is not None and value <= 0:
+            raise forms.ValidationError("El tiempo límite debe ser mayor que 0.")
+        return value
+
+    def clean_completion_condition(self):
+        value = self.cleaned_data.get("completion_condition") or {}
+        if not isinstance(value, dict):
+            raise forms.ValidationError("La condición debe ser un objeto JSON.")
+        return value
