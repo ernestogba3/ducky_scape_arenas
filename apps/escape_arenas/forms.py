@@ -1,7 +1,6 @@
 from django import forms
 
 # TODO: reescribir en Fase 2.
-from django import forms
 
 from .models import EscapeRoom, Room, Stage, Hint, Puzzle
 
