@@ -121,11 +121,16 @@ def escape_submit(request, pk):
         messages.error(request, "Respuesta no válida.")
         return redirect("escape_arenas:play", pk=session.pk)
 
+    stage = session.current_stage
+    if stage is None:
+        messages.error(request, "No hay prueba actual.")
+        return redirect("escape_arenas:play", pk=session.pk)
     puzzle = stage.puzzles.order_by("order").first()
     if puzzle is None:
         messages.error(request, "Esta prueba no tiene puzzle.")
         return redirect("escape_arenas:play", pk=session.pk)
 
+    answer = form.cleaned_data["answer"]
     is_correct = check_stage_answer(puzzle=puzzle, submitted_answer=answer)
     result = register_attempt(
         session=session,
