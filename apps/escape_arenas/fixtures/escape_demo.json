@@ -1,0 +1,486 @@
+[
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 1001,
+    "fields": {
+      "name": "Full Stack Lockdown",
+      "slug": "full-stack-lockdown",
+      "description": "Una actualización ha bloqueado la estación Ducky. Restablece ocho sistemas de desarrollo web para abrir la salida antes de que se reinicie el núcleo.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 25,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 1001,
+    "fields": {
+      "escape_room": 1001,
+      "name": "La estación Ducky",
+      "description": "Ocho sistemas conectados mantienen cerrada la salida.",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "",
+      "final_fragment": "Estación restablecida. La salida está abierta.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1001,
+    "fields": {
+      "room": 1001,
+      "name": "El panel invisible",
+      "description": "La estación Ducky ha quedado aislada. El primer panel solo obedece a una regla de estilo.",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 1 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1001,
+    "fields": {
+      "stage": 1001,
+      "title": "HTML / CSS",
+      "description": "El panel tiene id=\"salida\". Escribe el selector CSS que selecciona exclusivamente ese id.",
+      "type": "TEXT",
+      "config": {
+        "answer_mode": "EXACT",
+        "options": []
+      },
+      "solution_hash": "#salida",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1001,
+    "fields": {
+      "puzzle": 1001,
+      "room": null,
+      "text": "Un selector de id comienza con una almohadilla.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1002,
+    "fields": {
+      "room": 1001,
+      "name": "La alarma duplicada",
+      "description": "Una alarma se dispara cada vez que pulsas el botón. Necesitas leer el resultado antes de desactivarla.",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 2 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1002,
+    "fields": {
+      "stage": 1002,
+      "title": "JavaScript",
+      "description": "¿Qué número devuelve esta expresión de JavaScript?\n[2, 4, 6].map(n => n / 2).reduce((a, b) => a + b, 0)",
+      "type": "TEXT",
+      "config": {
+        "answer_mode": "EXACT",
+        "options": []
+      },
+      "solution_hash": "6",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1002,
+    "fields": {
+      "puzzle": 1002,
+      "room": null,
+      "text": "Primero obtienes [1, 2, 3]. Después reduce suma sus elementos.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1003,
+    "fields": {
+      "room": 1001,
+      "name": "El núcleo térmico",
+      "description": "El sistema de refrigeración busca una lectura concreta de una lista.",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 3 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1003,
+    "fields": {
+      "stage": 1003,
+      "title": "Python",
+      "description": "¿Qué imprime este código Python?\nvalores = [3, 5, 8, 10]\nprint(sum(n for n in valores if n % 2 == 0))",
+      "type": "TEXT",
+      "config": {
+        "answer_mode": "EXACT",
+        "options": []
+      },
+      "solution_hash": "18",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1003,
+    "fields": {
+      "puzzle": 1003,
+      "room": null,
+      "text": "Solo entran en la suma los números pares.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1004,
+    "fields": {
+      "room": 1001,
+      "name": "El acceso sellado",
+      "description": "La consola permite ver una partida privada. Tienes que protegerla antes de abrir la siguiente puerta.",
+      "order": 4,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 4 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1004,
+    "fields": {
+      "stage": 1004,
+      "title": "Django",
+      "description": "Además de exigir inicio de sesión, ¿qué filtro impide abrir una partida ajena usando su identificador?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "answer_mode": "EXACT",
+        "options": [
+          "user=request.user",
+          "status=\"PLAYING\"",
+          "escape_room__is_active=True"
+        ]
+      },
+      "solution_hash": "user=request.user",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1004,
+    "fields": {
+      "puzzle": 1004,
+      "room": null,
+      "text": "El identificador de la partida no demuestra quién es su propietario.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1005,
+    "fields": {
+      "room": 1001,
+      "name": "El archivo de tripulantes",
+      "description": "La lista de evacuación incluye registros inactivos. Elige solo a quienes siguen conectados.",
+      "order": 5,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 5 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1005,
+    "fields": {
+      "stage": 1005,
+      "title": "SQL",
+      "description": "La tabla jugadores tiene columnas nombre y activo (booleano). Selecciona la consulta que devuelve los nombres de los jugadores activos.",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "answer_mode": "EXACT",
+        "options": [
+          "SELECT nombre FROM jugadores WHERE activo = TRUE;",
+          "SELECT nombre FROM jugadores ORDER BY activo;",
+          "SELECT activo FROM jugadores;"
+        ]
+      },
+      "solution_hash": "SELECT nombre FROM jugadores WHERE activo = TRUE;",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1005,
+    "fields": {
+      "puzzle": 1005,
+      "room": null,
+      "text": "La condición de filtrado de filas va después de WHERE.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1006,
+    "fields": {
+      "room": 1001,
+      "name": "La señal perdida",
+      "description": "La última puerta necesita conocer el estado del repositorio antes de guardar cambios.",
+      "order": 6,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 6 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1006,
+    "fields": {
+      "stage": 1006,
+      "title": "Git",
+      "description": "Escribe el comando de Git que muestra el estado del árbol de trabajo y los archivos preparados, sin modificar nada.",
+      "type": "TEXT",
+      "config": {
+        "answer_mode": "CASE_INSENSITIVE",
+        "options": []
+      },
+      "solution_hash": "git status",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1006,
+    "fields": {
+      "puzzle": 1006,
+      "room": null,
+      "text": "El subcomando expresa el estado del repositorio.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1007,
+    "fields": {
+      "room": 1001,
+      "name": "El plan de rescate",
+      "description": "Solo queda organizar una intervención breve y con un objetivo claro.",
+      "order": 7,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 7 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1007,
+    "fields": {
+      "stage": 1007,
+      "title": "Scrum",
+      "description": "¿Cómo se llama el evento de Scrum en el que se define el objetivo del Sprint y se planifica el trabajo del Sprint?",
+      "type": "TEXT",
+      "config": {
+        "answer_mode": "CASE_INSENSITIVE",
+        "options": []
+      },
+      "solution_hash": "Sprint Planning",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1007,
+    "fields": {
+      "puzzle": 1007,
+      "room": null,
+      "text": "Es el evento de planificación al comienzo del Sprint. Responde con su nombre en inglés.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1008,
+    "fields": {
+      "room": 1001,
+      "name": "La llave de salida",
+      "description": "La consola final acepta únicamente un PIN de cuatro dígitos ASCII. Elige su regla y abre la salida.",
+      "order": 8,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Sistema 8 restablecido.",
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1008,
+    "fields": {
+      "stage": 1008,
+      "title": "Regex",
+      "description": "¿Qué patrón valida una cadena formada exactamente por cuatro dígitos entre 0 y 9?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "answer_mode": "EXACT",
+        "options": [
+          "^[0-9]{4}$",
+          "[0-9]+",
+          "^[A-Z]{4}$"
+        ]
+      },
+      "solution_hash": "^[0-9]{4}$",
+      "max_attempts": null,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1008,
+    "fields": {
+      "puzzle": 1008,
+      "room": null,
+      "text": "Necesitas anclar principio y final y repetir la clase de dígitos cuatro veces.",
+      "order": 1,
+      "coin_price": 0,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-15T12:00:00Z",
+      "updated_at": "2026-10-15T12:00:00Z"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}{% load static %}
+{% block title %}{% block escape_title %}Ducky Escape Arenas{% endblock %}{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'escape_arenas/css/escape.css' %}">{% endblock %}
+{% block main %}
+<main class="escape-shell" id="escape-main">
+<nav class="escape-nav" aria-label="Escape Arenas"><a href="{% url 'escape_arenas:room_list' %}">🦆 Escape Arenas</a><a href="{% url 'escape_arenas:history' %}">Mis partidas</a></nav>
+{% if messages %}<div class="feedback" aria-live="polite">{% for message in messages %}<p class="notice {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
+{% block escape_content %}{% endblock %}</main>
+{% endblock %}
+{% block extra_scripts %}<script src="{% static 'escape_arenas/js/timer.js' %}" defer></script>{% endblock %}

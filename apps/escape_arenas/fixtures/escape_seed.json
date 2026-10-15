@@ -1,0 +1,4180 @@
+[
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 1,
+    "fields": {
+      "name": "Escape: Full Stack",
+      "slug": "full-stack",
+      "description": "Pon a prueba tus conocimientos de Full Stack en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_full_stack",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 1,
+    "fields": {
+      "escape_room": 1,
+      "name": "El Servidor Oscuro",
+      "description": "Sala de pruebas: El Servidor Oscuro",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_1",
+      "final_fragment": "Fragmento 1 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 1,
+    "fields": {
+      "room": 1,
+      "name": "Bienvenida al Stack",
+      "description": "Placeholder descripción: Bienvenida al Stack",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 2,
+    "fields": {
+      "room": 1,
+      "name": "El Protocolo HTTP",
+      "description": "Placeholder descripción: El Protocolo HTTP",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 2.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 1,
+    "fields": {
+      "stage": 2,
+      "title": "¿Qué método HTTP?",
+      "description": "Un formulario de login envía credenciales. ¿Qué método HTTP es el correcto?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["GET", "POST", "PUT", "DELETE"]
+      },
+      "solution_hash": "POST",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 1,
+    "fields": {
+      "puzzle": 1,
+      "room": null,
+      "text": "Piensa en seguridad: ¿quieres los datos en la URL?",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 30,
+      "penalty_points": 20,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 2,
+    "fields": {
+      "puzzle": 1,
+      "room": null,
+      "text": "Los datos sensibles no deben ir en la URL.",
+      "order": 2,
+      "coin_price": 20,
+      "penalty_seconds": 60,
+      "penalty_points": 40,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 2,
+    "fields": {
+      "stage": 2,
+      "title": "Código de respuesta",
+      "description": "¿Qué código HTTP devuelve un recurso creado con éxito?",
+      "type": "NUMBER",
+      "config": {},
+      "solution_hash": "201",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 3,
+    "fields": {
+      "puzzle": 2,
+      "room": null,
+      "text": "Es un código 2xx.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 3,
+    "fields": {
+      "room": 1,
+      "name": "Cliente y Servidor",
+      "description": "Placeholder descripción: Cliente y Servidor",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 3.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 3,
+    "fields": {
+      "stage": 3,
+      "title": "¿Frontend o Backend?",
+      "description": "React, Vue y Angular son tecnologías de…",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["Frontend", "Backend", "Base de datos", "DevOps"]
+      },
+      "solution_hash": "Frontend",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 4,
+    "fields": {
+      "puzzle": 3,
+      "room": null,
+      "text": "Se ejecutan en el navegador.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 15,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 2,
+    "fields": {
+      "escape_room": 1,
+      "name": "La Sala de las APIs",
+      "description": "Sala de pruebas: La Sala de las APIs",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_2",
+      "final_fragment": "Fragmento 2 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 4,
+    "fields": {
+      "room": 2,
+      "name": "REST vs JSON",
+      "description": "Placeholder descripción: REST vs JSON",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 4.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 4,
+    "fields": {
+      "stage": 4,
+      "title": "Formato de intercambio",
+      "description": "¿Qué formato usan mayoritariamente las APIs REST modernas?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["XML", "JSON", "CSV", "YAML"]
+      },
+      "solution_hash": "JSON",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 5,
+    "fields": {
+      "puzzle": 4,
+      "room": null,
+      "text": "Es liviano y legible por humanos.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 5,
+    "fields": {
+      "room": 2,
+      "name": "Autenticación",
+      "description": "Placeholder descripción: Autenticación",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 5.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 5,
+    "fields": {
+      "stage": 5,
+      "title": "Token de sesión",
+      "description": "¿Qué estándar de token se usa habitualmente para autenticar APIs REST? (siglas)",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "JWT",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 6,
+    "fields": {
+      "puzzle": 5,
+      "room": null,
+      "text": "Son tres partes separadas por puntos.",
+      "order": 1,
+      "coin_price": 15,
+      "penalty_seconds": 30,
+      "penalty_points": 20,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 7,
+    "fields": {
+      "puzzle": 5,
+      "room": null,
+      "text": "JSON Web Token.",
+      "order": 2,
+      "coin_price": 25,
+      "penalty_seconds": 60,
+      "penalty_points": 40,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 6,
+    "fields": {
+      "room": 2,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 3,
+    "fields": {
+      "escape_room": 1,
+      "name": "El Despliegue Final",
+      "description": "Sala de pruebas: El Despliegue Final",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_3",
+      "final_fragment": "Fragmento 3 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 7,
+    "fields": {
+      "room": 3,
+      "name": "Variables de entorno",
+      "description": "Placeholder descripción: Variables de entorno",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 7.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 6,
+    "fields": {
+      "stage": 7,
+      "title": "Archivo de config",
+      "description": "¿En qué archivo se suelen guardar las variables de entorno en local? (con el punto inicial)",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": ".env",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 8,
+    "fields": {
+      "puzzle": 6,
+      "room": null,
+      "text": "Empieza con un punto.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 8,
+    "fields": {
+      "room": 3,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 2,
+    "fields": {
+      "name": "Escape: Python",
+      "slug": "python",
+      "description": "Pon a prueba tus conocimientos de Python en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_python",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 4,
+    "fields": {
+      "escape_room": 2,
+      "name": "La Serpiente de Tipos",
+      "description": "Sala de pruebas: La Serpiente de Tipos",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_4",
+      "final_fragment": "Fragmento 4 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 9,
+    "fields": {
+      "room": 4,
+      "name": "Bienvenida a Python",
+      "description": "Placeholder descripción: Bienvenida a Python",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 10,
+    "fields": {
+      "room": 4,
+      "name": "Tipos de datos",
+      "description": "Placeholder descripción: Tipos de datos",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 10.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 7,
+    "fields": {
+      "stage": 10,
+      "title": "¿Mutable o inmutable?",
+      "description": "¿Cuál de estos tipos es INMUTABLE en Python?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["list", "dict", "tuple", "set"]
+      },
+      "solution_hash": "tuple",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 9,
+    "fields": {
+      "puzzle": 7,
+      "room": null,
+      "text": "No se puede modificar después de crearlo.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 8,
+    "fields": {
+      "stage": 10,
+      "title": "Tipo de resultado",
+      "description": "¿Qué tipo devuelve `type(3.14)` en Python?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "float",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 10,
+    "fields": {
+      "puzzle": 8,
+      "room": null,
+      "text": "Es un número con decimales.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 11,
+    "fields": {
+      "room": 4,
+      "name": "Funciones básicas",
+      "description": "Placeholder descripción: Funciones básicas",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 11.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 9,
+    "fields": {
+      "stage": 11,
+      "title": "len() de string",
+      "description": "¿Cuánto vale `len('python')`?",
+      "type": "NUMBER",
+      "config": {},
+      "solution_hash": "6",
+      "max_attempts": 5,
+      "points": 60,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 11,
+    "fields": {
+      "puzzle": 9,
+      "room": null,
+      "text": "Cuenta los caracteres.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 5,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 5,
+    "fields": {
+      "escape_room": 2,
+      "name": "El Laberinto de las Listas",
+      "description": "Sala de pruebas: El Laberinto de las Listas",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_5",
+      "final_fragment": "Fragmento 5 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 12,
+    "fields": {
+      "room": 5,
+      "name": "Slicing",
+      "description": "Placeholder descripción: Slicing",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 12.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 10,
+    "fields": {
+      "stage": 12,
+      "title": "Resultado de slice",
+      "description": "¿Qué devuelve `[1,2,3,4,5][1:3]`?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "[2, 3]",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 12,
+    "fields": {
+      "puzzle": 10,
+      "room": null,
+      "text": "El índice final es exclusivo.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 13,
+    "fields": {
+      "room": 5,
+      "name": "List comprehension",
+      "description": "Placeholder descripción: List comprehension",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 13.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 11,
+    "fields": {
+      "stage": 13,
+      "title": "Compresión de lista",
+      "description": "¿Cuántos elementos tiene `[x for x in range(10) if x % 2 == 0]`?",
+      "type": "NUMBER",
+      "config": {},
+      "solution_hash": "5",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 13,
+    "fields": {
+      "puzzle": 11,
+      "room": null,
+      "text": "Son los números pares del 0 al 9.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 14,
+    "fields": {
+      "room": 5,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 6,
+    "fields": {
+      "escape_room": 2,
+      "name": "El Templo de los Decoradores",
+      "description": "Sala de pruebas: El Templo de los Decoradores",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_6",
+      "final_fragment": "Fragmento 6 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 15,
+    "fields": {
+      "room": 6,
+      "name": "Decoradores",
+      "description": "Placeholder descripción: Decoradores",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 15.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 12,
+    "fields": {
+      "stage": 15,
+      "title": "Sintaxis decorador",
+      "description": "¿Con qué símbolo se aplica un decorador en Python?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "@",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 14,
+    "fields": {
+      "puzzle": 12,
+      "room": null,
+      "text": "Va en la línea justo antes de `def`.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 16,
+    "fields": {
+      "room": 6,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 3,
+    "fields": {
+      "name": "Escape: Django",
+      "slug": "django",
+      "description": "Pon a prueba tus conocimientos de Django en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_django",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 7,
+    "fields": {
+      "escape_room": 3,
+      "name": "El MTV Perdido",
+      "description": "Sala de pruebas: El MTV Perdido",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_7",
+      "final_fragment": "Fragmento 7 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 17,
+    "fields": {
+      "room": 7,
+      "name": "Bienvenida a Django",
+      "description": "Placeholder descripción: Bienvenida a Django",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 18,
+    "fields": {
+      "room": 7,
+      "name": "Arquitectura MTV",
+      "description": "Placeholder descripción: Arquitectura MTV",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 18.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 13,
+    "fields": {
+      "stage": 18,
+      "title": "¿Qué es la V en MTV?",
+      "description": "En el patrón MTV de Django, ¿qué representa la 'V'?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["Variable", "View", "Virtual", "Validation"]
+      },
+      "solution_hash": "View",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 15,
+    "fields": {
+      "puzzle": 13,
+      "room": null,
+      "text": "Es quien recibe la petición y devuelve la respuesta.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 14,
+    "fields": {
+      "stage": 18,
+      "title": "¿Qué es el Template?",
+      "description": "¿Cuál es la función principal del Template en Django?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Gestionar la BD",
+          "Renderizar HTML",
+          "Enrutar URLs",
+          "Autenticar usuarios"
+        ]
+      },
+      "solution_hash": "Renderizar HTML",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 16,
+    "fields": {
+      "puzzle": 14,
+      "room": null,
+      "text": "Es la capa de presentación.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 19,
+    "fields": {
+      "room": 7,
+      "name": "ORM básico",
+      "description": "Placeholder descripción: ORM básico",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 19.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 15,
+    "fields": {
+      "stage": 19,
+      "title": "Obtener todos los objetos",
+      "description": "¿Qué método del ORM de Django devuelve todos los objetos de un modelo? (solo el método)",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "all",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 17,
+    "fields": {
+      "puzzle": 15,
+      "room": null,
+      "text": "Lo usas así: `MiModelo.objects.______()`",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 8,
+    "fields": {
+      "escape_room": 3,
+      "name": "El Túnel de las URLs",
+      "description": "Sala de pruebas: El Túnel de las URLs",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_8",
+      "final_fragment": "Fragmento 8 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 20,
+    "fields": {
+      "room": 8,
+      "name": "Rutas URL",
+      "description": "Placeholder descripción: Rutas URL",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 20.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 16,
+    "fields": {
+      "stage": 20,
+      "title": "Función de URL",
+      "description": "¿Qué función de Django se usa para definir una URL en `urls.py`?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "path",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 18,
+    "fields": {
+      "puzzle": 16,
+      "room": null,
+      "text": "Está en `django.urls`.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 21,
+    "fields": {
+      "room": 8,
+      "name": "Migraciones",
+      "description": "Placeholder descripción: Migraciones",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 21.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 17,
+    "fields": {
+      "stage": 21,
+      "title": "Comando de migración",
+      "description": "¿Qué comando aplica las migraciones pendientes en Django?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "python manage.py migrate",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 19,
+    "fields": {
+      "puzzle": 17,
+      "room": null,
+      "text": "Primero `makemigrations`, luego…",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 22,
+    "fields": {
+      "room": 8,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 9,
+    "fields": {
+      "escape_room": 3,
+      "name": "La Cripta del Admin",
+      "description": "Sala de pruebas: La Cripta del Admin",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_9",
+      "final_fragment": "Fragmento 9 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 23,
+    "fields": {
+      "room": 9,
+      "name": "Panel de administración",
+      "description": "Placeholder descripción: Panel de administración",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 23.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 18,
+    "fields": {
+      "stage": 23,
+      "title": "Registrar modelo",
+      "description": "¿Con qué función se registra un modelo en el admin de Django?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "admin.site.register",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 20,
+    "fields": {
+      "puzzle": 18,
+      "room": null,
+      "text": "Se escribe en `admin.py`.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 24,
+    "fields": {
+      "room": 9,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 4,
+    "fields": {
+      "name": "Escape: JavaScript",
+      "slug": "javascript",
+      "description": "Pon a prueba tus conocimientos de JavaScript en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_javascript",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 10,
+    "fields": {
+      "escape_room": 4,
+      "name": "La Torre de los Tipos",
+      "description": "Sala de pruebas: La Torre de los Tipos",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_10",
+      "final_fragment": "Fragmento 10 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 25,
+    "fields": {
+      "room": 10,
+      "name": "Bienvenida a JS",
+      "description": "Placeholder descripción: Bienvenida a JS",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 26,
+    "fields": {
+      "room": 10,
+      "name": "typeof y coerción",
+      "description": "Placeholder descripción: typeof y coerción",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 26.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 19,
+    "fields": {
+      "stage": 26,
+      "title": "typeof null",
+      "description": "¿Qué devuelve `typeof null` en JavaScript?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "object",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 21,
+    "fields": {
+      "puzzle": 19,
+      "room": null,
+      "text": "Es uno de los bugs históricos más famosos de JS.",
+      "order": 1,
+      "coin_price": 15,
+      "penalty_seconds": 30,
+      "penalty_points": 20,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 20,
+    "fields": {
+      "stage": 26,
+      "title": "Igualdad estricta",
+      "description": "¿Qué operador compara valor Y tipo en JavaScript?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["==", "===", "=", "!="]
+      },
+      "solution_hash": "===",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 22,
+    "fields": {
+      "puzzle": 20,
+      "room": null,
+      "text": "Evita la coerción de tipos.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 27,
+    "fields": {
+      "room": 10,
+      "name": "Variables",
+      "description": "Placeholder descripción: Variables",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 27.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 21,
+    "fields": {
+      "stage": 27,
+      "title": "Diferencia let/const",
+      "description": "¿Cuál de estas declaraciones NO puede reasignarse?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["var", "let", "const", "Todas pueden"]
+      },
+      "solution_hash": "const",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 23,
+    "fields": {
+      "puzzle": 21,
+      "room": null,
+      "text": "Piensa en 'constante'.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 11,
+    "fields": {
+      "escape_room": 4,
+      "name": "El Bucle Infinito",
+      "description": "Sala de pruebas: El Bucle Infinito",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_11",
+      "final_fragment": "Fragmento 11 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 28,
+    "fields": {
+      "room": 11,
+      "name": "Callbacks y promesas",
+      "description": "Placeholder descripción: Callbacks y promesas",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 28.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 22,
+    "fields": {
+      "stage": 28,
+      "title": "Promesa resuelta",
+      "description": "¿Qué método de una Promise se ejecuta cuando se resuelve correctamente?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "then",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 24,
+    "fields": {
+      "puzzle": 22,
+      "room": null,
+      "text": "Va encadenado: `promise.______(callback)`",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 29,
+    "fields": {
+      "room": 11,
+      "name": "Arrow functions",
+      "description": "Placeholder descripción: Arrow functions",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 29.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 23,
+    "fields": {
+      "stage": 29,
+      "title": "Sintaxis arrow",
+      "description": "¿Cuál es la sintaxis correcta de una arrow function?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "function fn() => {}",
+          "const fn = () => {}",
+          "fn = function() =>",
+          "def fn():"
+        ]
+      },
+      "solution_hash": "const fn = () => {}",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 25,
+    "fields": {
+      "puzzle": 23,
+      "room": null,
+      "text": "Usa la flecha `=>`.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 30,
+    "fields": {
+      "room": 11,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 12,
+    "fields": {
+      "escape_room": 4,
+      "name": "El Santuario del DOM",
+      "description": "Sala de pruebas: El Santuario del DOM",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_12",
+      "final_fragment": "Fragmento 12 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 31,
+    "fields": {
+      "room": 12,
+      "name": "Manipulación DOM",
+      "description": "Placeholder descripción: Manipulación DOM",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 31.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 24,
+    "fields": {
+      "stage": 31,
+      "title": "Selector por ID",
+      "description": "¿Qué método JS selecciona un elemento por su ID?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "getElementById",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 26,
+    "fields": {
+      "puzzle": 24,
+      "room": null,
+      "text": "Es `document.______('miId')`",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 32,
+    "fields": {
+      "room": 12,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 5,
+    "fields": {
+      "name": "Escape: ReactJS",
+      "slug": "react",
+      "description": "Pon a prueba tus conocimientos de ReactJS en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_react",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 13,
+    "fields": {
+      "escape_room": 5,
+      "name": "El Árbol de Componentes",
+      "description": "Sala de pruebas: El Árbol de Componentes",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_13",
+      "final_fragment": "Fragmento 13 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 33,
+    "fields": {
+      "room": 13,
+      "name": "Bienvenida a React",
+      "description": "Placeholder descripción: Bienvenida a React",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 34,
+    "fields": {
+      "room": 13,
+      "name": "JSX y componentes",
+      "description": "Placeholder descripción: JSX y componentes",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 34.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 25,
+    "fields": {
+      "stage": 34,
+      "title": "¿Qué es JSX?",
+      "description": "JSX es…",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Un lenguaje nuevo",
+          "Una extensión de sintaxis de JS que parece HTML",
+          "Un framework CSS",
+          "Una librería de animaciones"
+        ]
+      },
+      "solution_hash": "Una extensión de sintaxis de JS que parece HTML",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 27,
+    "fields": {
+      "puzzle": 25,
+      "room": null,
+      "text": "Se transpila con Babel.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 26,
+    "fields": {
+      "stage": 34,
+      "title": "Componente funcional",
+      "description": "¿Con qué palabra clave se puede definir un componente funcional en React (además de const)?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "function",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 28,
+    "fields": {
+      "puzzle": 26,
+      "room": null,
+      "text": "O también con arrow function `const`.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 35,
+    "fields": {
+      "room": 13,
+      "name": "Props",
+      "description": "Placeholder descripción: Props",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 35.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 27,
+    "fields": {
+      "stage": 35,
+      "title": "Flujo de props",
+      "description": "¿En qué dirección fluyen las props en React?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "De hijo a padre",
+          "De padre a hijo",
+          "Bidireccional",
+          "Depende del hook"
+        ]
+      },
+      "solution_hash": "De padre a hijo",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 29,
+    "fields": {
+      "puzzle": 27,
+      "room": null,
+      "text": "Son de solo lectura en el componente hijo.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 14,
+    "fields": {
+      "escape_room": 5,
+      "name": "El Gancho del Estado",
+      "description": "Sala de pruebas: El Gancho del Estado",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_14",
+      "final_fragment": "Fragmento 14 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 36,
+    "fields": {
+      "room": 14,
+      "name": "useState",
+      "description": "Placeholder descripción: useState",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 36.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 28,
+    "fields": {
+      "stage": 36,
+      "title": "Hook de estado",
+      "description": "¿Qué hook de React se usa para gestionar estado local?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "useState",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 30,
+    "fields": {
+      "puzzle": 28,
+      "room": null,
+      "text": "Empieza por `use`.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 37,
+    "fields": {
+      "room": 14,
+      "name": "useEffect",
+      "description": "Placeholder descripción: useEffect",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 37.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 29,
+    "fields": {
+      "stage": 37,
+      "title": "Dependencias de effect",
+      "description": "Si pasas `[]` como segundo argumento a `useEffect`, ¿cuándo se ejecuta?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "En cada render",
+          "Solo al montar el componente",
+          "Solo al desmontar",
+          "Nunca"
+        ]
+      },
+      "solution_hash": "Solo al montar el componente",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 31,
+    "fields": {
+      "puzzle": 29,
+      "room": null,
+      "text": "Array vacío = sin dependencias que vigilar.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 38,
+    "fields": {
+      "room": 14,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 15,
+    "fields": {
+      "escape_room": 5,
+      "name": "La Cámara del Virtual DOM",
+      "description": "Sala de pruebas: La Cámara del Virtual DOM",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_15",
+      "final_fragment": "Fragmento 15 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 39,
+    "fields": {
+      "room": 15,
+      "name": "Virtual DOM",
+      "description": "Placeholder descripción: Virtual DOM",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 39.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 30,
+    "fields": {
+      "stage": 39,
+      "title": "¿Qué es el Virtual DOM?",
+      "description": "El Virtual DOM de React es…",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Una copia del DOM guardada en disco",
+          "Una representación en memoria del DOM real",
+          "Un DOM más rápido del navegador",
+          "Una API de React para manipular CSS"
+        ]
+      },
+      "solution_hash": "Una representación en memoria del DOM real",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 32,
+    "fields": {
+      "puzzle": 30,
+      "room": null,
+      "text": "Vive en JavaScript, no en el navegador.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 40,
+    "fields": {
+      "room": 15,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 6,
+    "fields": {
+      "name": "Escape: SQL",
+      "slug": "sql",
+      "description": "Pon a prueba tus conocimientos de SQL en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_sql",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 16,
+    "fields": {
+      "escape_room": 6,
+      "name": "La Bóveda de las Tablas",
+      "description": "Sala de pruebas: La Bóveda de las Tablas",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_16",
+      "final_fragment": "Fragmento 16 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 41,
+    "fields": {
+      "room": 16,
+      "name": "Bienvenida a SQL",
+      "description": "Placeholder descripción: Bienvenida a SQL",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 42,
+    "fields": {
+      "room": 16,
+      "name": "SELECT básico",
+      "description": "Placeholder descripción: SELECT básico",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 42.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 31,
+    "fields": {
+      "stage": 42,
+      "title": "Orden de cláusulas",
+      "description": "Ordena las cláusulas de una query SELECT básica en el orden correcto.",
+      "type": "SEQUENCE",
+      "config": {
+        "options": ["WHERE", "FROM", "ORDER BY", "SELECT"]
+      },
+      "solution_hash": "SELECT,FROM,WHERE,ORDER BY",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 33,
+    "fields": {
+      "puzzle": 31,
+      "room": null,
+      "text": "Empieza por lo que quieres ver.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 32,
+    "fields": {
+      "stage": 42,
+      "title": "Filtrar filas",
+      "description": "¿Qué cláusula SQL filtra las filas de una tabla?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "WHERE",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 34,
+    "fields": {
+      "puzzle": 32,
+      "room": null,
+      "text": "Va después de FROM.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 43,
+    "fields": {
+      "room": 16,
+      "name": "Agregaciones",
+      "description": "Placeholder descripción: Agregaciones",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 43.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 33,
+    "fields": {
+      "stage": 43,
+      "title": "Función de conteo",
+      "description": "¿Qué función SQL cuenta el número de filas?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "COUNT",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 35,
+    "fields": {
+      "puzzle": 33,
+      "room": null,
+      "text": "Se usa con SELECT.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 5,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 17,
+    "fields": {
+      "escape_room": 6,
+      "name": "El Pasadizo de los JOIN",
+      "description": "Sala de pruebas: El Pasadizo de los JOIN",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_17",
+      "final_fragment": "Fragmento 17 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 44,
+    "fields": {
+      "room": 17,
+      "name": "Tipos de JOIN",
+      "description": "Placeholder descripción: Tipos de JOIN",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 44.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 34,
+    "fields": {
+      "stage": 44,
+      "title": "JOIN más común",
+      "description": "¿Qué tipo de JOIN devuelve solo las filas con coincidencia en ambas tablas?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["LEFT JOIN", "INNER JOIN", "FULL JOIN", "CROSS JOIN"]
+      },
+      "solution_hash": "INNER JOIN",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 36,
+    "fields": {
+      "puzzle": 34,
+      "room": null,
+      "text": "Excluye las filas sin pareja.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 45,
+    "fields": {
+      "room": 17,
+      "name": "GROUP BY",
+      "description": "Placeholder descripción: GROUP BY",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 45.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 35,
+    "fields": {
+      "stage": 45,
+      "title": "Uso de GROUP BY",
+      "description": "¿Qué cláusula SQL agrupa filas con el mismo valor en una columna?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "GROUP BY",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 37,
+    "fields": {
+      "puzzle": 35,
+      "room": null,
+      "text": "Se usa junto con funciones de agregación como COUNT o SUM.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 46,
+    "fields": {
+      "room": 17,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 18,
+    "fields": {
+      "escape_room": 6,
+      "name": "El Altar de las Claves",
+      "description": "Sala de pruebas: El Altar de las Claves",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_18",
+      "final_fragment": "Fragmento 18 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 47,
+    "fields": {
+      "room": 18,
+      "name": "Claves primarias",
+      "description": "Placeholder descripción: Claves primarias",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 47.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 36,
+    "fields": {
+      "stage": 47,
+      "title": "Restricción PRIMARY KEY",
+      "description": "¿Qué garantiza una PRIMARY KEY?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Solo unicidad",
+          "Solo no nulidad",
+          "Unicidad y no nulidad",
+          "Nada en concreto"
+        ]
+      },
+      "solution_hash": "Unicidad y no nulidad",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 38,
+    "fields": {
+      "puzzle": 36,
+      "room": null,
+      "text": "Una PK identifica de forma única cada fila.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 48,
+    "fields": {
+      "room": 18,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 7,
+    "fields": {
+      "name": "Escape: PostgreSQL",
+      "slug": "postgres",
+      "description": "Pon a prueba tus conocimientos de PostgreSQL en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_postgres",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 19,
+    "fields": {
+      "escape_room": 7,
+      "name": "El Almacén de Datos",
+      "description": "Sala de pruebas: El Almacén de Datos",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_19",
+      "final_fragment": "Fragmento 19 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 49,
+    "fields": {
+      "room": 19,
+      "name": "Bienvenida a PostgreSQL",
+      "description": "Placeholder descripción: Bienvenida a PostgreSQL",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 50,
+    "fields": {
+      "room": 19,
+      "name": "Tipos de datos PG",
+      "description": "Placeholder descripción: Tipos de datos PG",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 50.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 37,
+    "fields": {
+      "stage": 50,
+      "title": "Tipo para texto largo",
+      "description": "¿Qué tipo de dato PostgreSQL usarías para texto de longitud variable sin límite?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["VARCHAR(255)", "TEXT", "CHAR(255)", "BLOB"]
+      },
+      "solution_hash": "TEXT",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 39,
+    "fields": {
+      "puzzle": 37,
+      "room": null,
+      "text": "No tiene límite de caracteres.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 38,
+    "fields": {
+      "stage": 50,
+      "title": "Tipo para entero serial",
+      "description": "¿Qué tipo de dato PostgreSQL genera automáticamente IDs enteros autoincrementales?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "SERIAL",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 40,
+    "fields": {
+      "puzzle": 38,
+      "room": null,
+      "text": "También existe BIGSERIAL para números grandes.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 51,
+    "fields": {
+      "room": 19,
+      "name": "Índices",
+      "description": "Placeholder descripción: Índices",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 51.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 39,
+    "fields": {
+      "stage": 51,
+      "title": "Propósito del índice",
+      "description": "¿Para qué sirve principalmente un índice en PostgreSQL?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Ahorrar espacio",
+          "Acelerar las consultas",
+          "Cifrar datos",
+          "Validar restricciones"
+        ]
+      },
+      "solution_hash": "Acelerar las consultas",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 41,
+    "fields": {
+      "puzzle": 39,
+      "room": null,
+      "text": "A cambio de algo de espacio extra en disco.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 20,
+    "fields": {
+      "escape_room": 7,
+      "name": "El Pasillo de las Transacciones",
+      "description": "Sala de pruebas: El Pasillo de las Transacciones",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_20",
+      "final_fragment": "Fragmento 20 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 52,
+    "fields": {
+      "room": 20,
+      "name": "ACID",
+      "description": "Placeholder descripción: ACID",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 52.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 40,
+    "fields": {
+      "stage": 52,
+      "title": "Letra A de ACID",
+      "description": "¿Qué significa la 'A' en el acrónimo ACID de bases de datos?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Atomicidad",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 42,
+    "fields": {
+      "puzzle": 40,
+      "room": null,
+      "text": "Todo o nada.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 53,
+    "fields": {
+      "room": 20,
+      "name": "ROLLBACK",
+      "description": "Placeholder descripción: ROLLBACK",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 53.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 41,
+    "fields": {
+      "stage": 53,
+      "title": "Deshacer transacción",
+      "description": "¿Qué comando SQL deshace los cambios de una transacción no confirmada?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "ROLLBACK",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 43,
+    "fields": {
+      "puzzle": 41,
+      "room": null,
+      "text": "Lo contrario de COMMIT.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 54,
+    "fields": {
+      "room": 20,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 21,
+    "fields": {
+      "escape_room": 7,
+      "name": "La Sala de los Esquemas",
+      "description": "Sala de pruebas: La Sala de los Esquemas",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_21",
+      "final_fragment": "Fragmento 21 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 55,
+    "fields": {
+      "room": 21,
+      "name": "Schema público",
+      "description": "Placeholder descripción: Schema público",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 55.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 42,
+    "fields": {
+      "stage": 55,
+      "title": "Schema por defecto",
+      "description": "¿Cómo se llama el schema por defecto en PostgreSQL?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "public",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 44,
+    "fields": {
+      "puzzle": 42,
+      "room": null,
+      "text": "Es el que se usa si no especificas ninguno.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 56,
+    "fields": {
+      "room": 21,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 8,
+    "fields": {
+      "name": "Escape: Git / GitHub",
+      "slug": "git",
+      "description": "Pon a prueba tus conocimientos de Git / GitHub en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_git",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 22,
+    "fields": {
+      "escape_room": 8,
+      "name": "El Repositorio Maldito",
+      "description": "Sala de pruebas: El Repositorio Maldito",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_22",
+      "final_fragment": "Fragmento 22 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 57,
+    "fields": {
+      "room": 22,
+      "name": "Bienvenida a Git",
+      "description": "Placeholder descripción: Bienvenida a Git",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 58,
+    "fields": {
+      "room": 22,
+      "name": "Comandos básicos",
+      "description": "Placeholder descripción: Comandos básicos",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 58.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 43,
+    "fields": {
+      "stage": 58,
+      "title": "Guardar cambios",
+      "description": "¿Qué comando Git guarda los cambios en el historial del repositorio?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "git commit",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 45,
+    "fields": {
+      "puzzle": 43,
+      "room": null,
+      "text": "Antes debes hacer `git add`.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 44,
+    "fields": {
+      "stage": 58,
+      "title": "Ver historial",
+      "description": "¿Qué comando Git muestra el historial de commits?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "git log",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 46,
+    "fields": {
+      "puzzle": 44,
+      "room": null,
+      "text": "Puedes añadir `--oneline` para verlo resumido.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 59,
+    "fields": {
+      "room": 22,
+      "name": "Ramas",
+      "description": "Placeholder descripción: Ramas",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 59.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 45,
+    "fields": {
+      "stage": 59,
+      "title": "Crear y cambiar de rama",
+      "description": "¿Qué comando crea una nueva rama Y cambia a ella en un solo paso?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "git checkout -b",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 47,
+    "fields": {
+      "puzzle": 45,
+      "room": null,
+      "text": "Combina `branch` y `checkout` en uno.",
+      "order": 1,
+      "coin_price": 15,
+      "penalty_seconds": 30,
+      "penalty_points": 20,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 23,
+    "fields": {
+      "escape_room": 8,
+      "name": "El Túnel del Merge",
+      "description": "Sala de pruebas: El Túnel del Merge",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_23",
+      "final_fragment": "Fragmento 23 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 60,
+    "fields": {
+      "room": 23,
+      "name": "Merge vs Rebase",
+      "description": "Placeholder descripción: Merge vs Rebase",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 60.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 46,
+    "fields": {
+      "stage": 60,
+      "title": "Diferencia merge/rebase",
+      "description": "¿Qué diferencia hay entre `git merge` y `git rebase`?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "No hay diferencia",
+          "Rebase reescribe el historial; merge crea un commit de unión",
+          "Merge reescribe el historial; rebase crea un commit de unión",
+          "Rebase solo funciona en GitHub"
+        ]
+      },
+      "solution_hash": "Rebase reescribe el historial; merge crea un commit de unión",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 48,
+    "fields": {
+      "puzzle": 46,
+      "room": null,
+      "text": "Uno es más 'limpio' pero más peligroso en ramas compartidas.",
+      "order": 1,
+      "coin_price": 15,
+      "penalty_seconds": 30,
+      "penalty_points": 20,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 61,
+    "fields": {
+      "room": 23,
+      "name": "Pull Request",
+      "description": "Placeholder descripción: Pull Request",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 61.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 47,
+    "fields": {
+      "stage": 61,
+      "title": "¿Qué es un PR?",
+      "description": "¿Qué es un Pull Request en GitHub?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Un comando de Git",
+          "Una petición para fusionar una rama en otra",
+          "Un tipo de commit",
+          "Una rama especial"
+        ]
+      },
+      "solution_hash": "Una petición para fusionar una rama en otra",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 49,
+    "fields": {
+      "puzzle": 47,
+      "room": null,
+      "text": "Es una propuesta de cambios.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 62,
+    "fields": {
+      "room": 23,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 24,
+    "fields": {
+      "escape_room": 8,
+      "name": "El Conflicto Final",
+      "description": "Sala de pruebas: El Conflicto Final",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_24",
+      "final_fragment": "Fragmento 24 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 63,
+    "fields": {
+      "room": 24,
+      "name": "Resolver conflictos",
+      "description": "Placeholder descripción: Resolver conflictos",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 63.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 48,
+    "fields": {
+      "stage": 63,
+      "title": "Marcadores de conflicto",
+      "description": "¿Con qué símbolo empieza la sección 'tuya' en un conflicto de merge en Git?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "<<<<<<<",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 50,
+    "fields": {
+      "puzzle": 48,
+      "room": null,
+      "text": "Son 7 caracteres seguidos.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 64,
+    "fields": {
+      "room": 24,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 9,
+    "fields": {
+      "name": "Escape: Scrum",
+      "slug": "scrum",
+      "description": "Pon a prueba tus conocimientos de Scrum en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_scrum",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 25,
+    "fields": {
+      "escape_room": 9,
+      "name": "La Sala del Sprint",
+      "description": "Sala de pruebas: La Sala del Sprint",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_25",
+      "final_fragment": "Fragmento 25 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 65,
+    "fields": {
+      "room": 25,
+      "name": "Bienvenida a Scrum",
+      "description": "Placeholder descripción: Bienvenida a Scrum",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 66,
+    "fields": {
+      "room": 25,
+      "name": "Roles de Scrum",
+      "description": "Placeholder descripción: Roles de Scrum",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 66.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 49,
+    "fields": {
+      "stage": 66,
+      "title": "El guardián del backlog",
+      "description": "¿Qué rol de Scrum es responsable del Product Backlog?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Product Owner",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 51,
+    "fields": {
+      "puzzle": 49,
+      "room": null,
+      "text": "Representa los intereses del cliente.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 50,
+    "fields": {
+      "stage": 66,
+      "title": "El facilitador",
+      "description": "¿Qué rol de Scrum facilita las ceremonias y elimina impedimentos?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Scrum Master",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 52,
+    "fields": {
+      "puzzle": 50,
+      "room": null,
+      "text": "No es el jefe del equipo.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 67,
+    "fields": {
+      "room": 25,
+      "name": "Artefactos",
+      "description": "Placeholder descripción: Artefactos",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 67.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 51,
+    "fields": {
+      "stage": 67,
+      "title": "Lista de tareas del sprint",
+      "description": "¿Cómo se llama la lista de tareas seleccionadas para un Sprint?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Sprint Backlog",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 53,
+    "fields": {
+      "puzzle": 51,
+      "room": null,
+      "text": "Se extrae del Product Backlog.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 26,
+    "fields": {
+      "escape_room": 9,
+      "name": "El Pasillo de las Ceremonias",
+      "description": "Sala de pruebas: El Pasillo de las Ceremonias",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_26",
+      "final_fragment": "Fragmento 26 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 68,
+    "fields": {
+      "room": 26,
+      "name": "Daily Scrum",
+      "description": "Placeholder descripción: Daily Scrum",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 68.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 52,
+    "fields": {
+      "stage": 68,
+      "title": "Duración del Daily",
+      "description": "¿Cuántos minutos dura como máximo el Daily Scrum?",
+      "type": "NUMBER",
+      "config": {},
+      "solution_hash": "15",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 54,
+    "fields": {
+      "puzzle": 52,
+      "room": null,
+      "text": "Es una reunión corta, de pie.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 69,
+    "fields": {
+      "room": 26,
+      "name": "Duración del Sprint",
+      "description": "Placeholder descripción: Duración del Sprint",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 69.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 53,
+    "fields": {
+      "stage": 69,
+      "title": "¿Cuánto dura un Sprint?",
+      "description": "¿Cuál es la duración máxima recomendada de un Sprint en Scrum?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["1 semana", "2 semanas", "4 semanas", "3 meses"]
+      },
+      "solution_hash": "4 semanas",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 55,
+    "fields": {
+      "puzzle": 53,
+      "room": null,
+      "text": "Suele ser de 1 a 4 semanas.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 70,
+    "fields": {
+      "room": 26,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 27,
+    "fields": {
+      "escape_room": 9,
+      "name": "La Cámara de la Retrospectiva",
+      "description": "Sala de pruebas: La Cámara de la Retrospectiva",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_27",
+      "final_fragment": "Fragmento 27 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 71,
+    "fields": {
+      "room": 27,
+      "name": "Sprint Review vs Retro",
+      "description": "Placeholder descripción: Sprint Review vs Retro",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 71.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 54,
+    "fields": {
+      "stage": 71,
+      "title": "¿Qué revisa la Retrospectiva?",
+      "description": "¿En qué se diferencia la Sprint Retrospective de la Sprint Review?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Son lo mismo",
+          "La Retro revisa el proceso del equipo; la Review revisa el producto",
+          "La Review revisa el proceso; la Retro revisa el producto",
+          "La Retro es solo para el Scrum Master"
+        ]
+      },
+      "solution_hash": "La Retro revisa el proceso del equipo; la Review revisa el producto",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 56,
+    "fields": {
+      "puzzle": 54,
+      "room": null,
+      "text": "Una mira hacia adentro, la otra hacia afuera.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 72,
+    "fields": {
+      "room": 27,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 10,
+    "fields": {
+      "name": "Escape: Regex",
+      "slug": "regex",
+      "description": "Pon a prueba tus conocimientos de Regex en este escape room.",
+      "difficulty": "MEDIUM",
+      "estimated_duration": 30,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "placeholder_final_regex",
+      "version": 1,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 28,
+    "fields": {
+      "escape_room": 10,
+      "name": "El Laberinto de Patrones",
+      "description": "Sala de pruebas: El Laberinto de Patrones",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "placeholder_door_28",
+      "final_fragment": "Fragmento 28 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 73,
+    "fields": {
+      "room": 28,
+      "name": "Bienvenida a Regex",
+      "description": "Placeholder descripción: Bienvenida a Regex",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 74,
+    "fields": {
+      "room": 28,
+      "name": "Metacaracteres básicos",
+      "description": "Placeholder descripción: Metacaracteres básicos",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 74.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 55,
+    "fields": {
+      "stage": 74,
+      "title": "¿Qué significa el punto?",
+      "description": "En una expresión regular, ¿qué representa el metacaracter `.`?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Un punto literal",
+          "Cualquier carácter excepto salto de línea",
+          "El fin de línea",
+          "Un espacio en blanco"
+        ]
+      },
+      "solution_hash": "Cualquier carácter excepto salto de línea",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 57,
+    "fields": {
+      "puzzle": 55,
+      "room": null,
+      "text": "Para buscar un punto literal necesitas escaparlo.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 56,
+    "fields": {
+      "stage": 74,
+      "title": "Cuantificador cero o más",
+      "description": "¿Qué cuantificador regex significa 'cero o más repeticiones'?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "*",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 1,
+      "order": 2,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 58,
+    "fields": {
+      "puzzle": 56,
+      "room": null,
+      "text": "Es un asterisco.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 5,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 75,
+    "fields": {
+      "room": 28,
+      "name": "Anclas",
+      "description": "Placeholder descripción: Anclas",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 75.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 57,
+    "fields": {
+      "stage": 75,
+      "title": "Inicio de línea",
+      "description": "¿Qué metacaracter regex indica el inicio de una línea?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "^",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 59,
+    "fields": {
+      "puzzle": 57,
+      "room": null,
+      "text": "Está en el teclado encima del 6.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 29,
+    "fields": {
+      "escape_room": 10,
+      "name": "El Túnel de los Grupos",
+      "description": "Sala de pruebas: El Túnel de los Grupos",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "placeholder_door_29",
+      "final_fragment": "Fragmento 29 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 76,
+    "fields": {
+      "room": 29,
+      "name": "Grupos de captura",
+      "description": "Placeholder descripción: Grupos de captura",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 76.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 58,
+    "fields": {
+      "stage": 76,
+      "title": "Sintaxis de grupo",
+      "description": "¿Qué caracteres delimitan un grupo de captura en regex?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "()",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 60,
+    "fields": {
+      "puzzle": 58,
+      "room": null,
+      "text": "Son paréntesis.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 5,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 77,
+    "fields": {
+      "room": 29,
+      "name": "Clases de caracteres",
+      "description": "Placeholder descripción: Clases de caracteres",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 77.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 59,
+    "fields": {
+      "stage": 77,
+      "title": "Clase de dígitos",
+      "description": "¿Qué shorthand regex representa cualquier dígito del 0 al 9?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "\\d",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 61,
+    "fields": {
+      "puzzle": 59,
+      "room": null,
+      "text": "Es una barra invertida + letra.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 78,
+    "fields": {
+      "room": 29,
+      "name": "Clave de salida",
+      "description": "Placeholder descripción: Clave de salida",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 30,
+    "fields": {
+      "escape_room": 10,
+      "name": "La Cripta de los Flags",
+      "description": "Sala de pruebas: La Cripta de los Flags",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "placeholder_door_30",
+      "final_fragment": "Fragmento 30 de la solución final.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 79,
+    "fields": {
+      "room": 30,
+      "name": "Flag insensible a mayúsculas",
+      "description": "Placeholder descripción: Flag insensible a mayúsculas",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Fragmento de stage 79.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 60,
+    "fields": {
+      "stage": 79,
+      "title": "Flag case-insensitive",
+      "description": "¿Qué flag regex hace que la búsqueda ignore mayúsculas/minúsculas?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "i",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 62,
+    "fields": {
+      "puzzle": 60,
+      "room": null,
+      "text": "Es una sola letra.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 5,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 80,
+    "fields": {
+      "room": 30,
+      "name": "Escape completado",
+      "description": "Placeholder descripción: Escape completado",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {},
+      "time_limit": null,
+      "fragment": "",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-14T08:00:00Z"
+    }
+  }
+]
