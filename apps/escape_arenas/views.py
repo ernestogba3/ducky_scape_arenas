@@ -222,6 +222,12 @@ def escape_result(request, pk):
 
     settlement = getattr(session, "settlement", None)
 
+    total_time_seconds = 0
+    if session.started_at and session.finished_at:
+        total_time_seconds = int(
+            (session.finished_at - session.started_at).total_seconds()
+        )
+    hints_used = session.hint_usages.count()
     return render(request, "escape_arenas/result.html", {
         "session": session,
         "settlement": settlement,
