@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.utils import timezone
 
 from .forms import EscapeSubmitForm
+from .forms import EscapeRoomForm
 from .models import EscapeRoom, UserEscapeSession, Stage, Hint, EscapeSettlement
 from .services import (
     check_stage_answer,
@@ -242,5 +243,82 @@ def escape_history(request):
         .order_by("-started_at")
     )
     return render(request, "escape_arenas/history.html", {"sessions": sessions})
-# TODO: reescribir en Fase 2 con UserEscapeSession, UserStageProgress,
-# PuzzleAttempt y HintUsage.
+
+# ──────────────────────────────────────────────────────────────
+# CRUD del profesor (EscapeRoom)
+# ──────────────────────────────────────────────────────────────
+@login_required
+def my_escape_rooms(request):
+    """Lista solo las aventuras creadas por el usuario actual."""
+    rooms = (
+        EscapeRoom.objects
+        .filter(creator=request.user)
+        .order_by("-created_at")
+    )
+    return render(request, "escape_arenas/my_rooms.html", {"rooms": rooms})
+
+
+@login_required
+def escape_room_create(request):
+    """Crea una nueva EscapeRoom. El autor es el usuario actual."""
+    if request.method == "POST":
+        form = EscapeRoomForm(request.POST)
+        if form.is_valid():
+            room = form.save(commit=False)
+            room.creator = request.user  # asignar autor
+            room.save()
+            messages.success(request, "Aventura creada correctamente.")
+            return redirect("escape_arenas:room_detail", slug=room.slug)
+    else:
+        form = EscapeRoomForm()
+
+    return render(request, "escape_arenas/escape_room_form.html", {
+        "form": form,
+        "action": "create",
+    })
+
+
+@login_required
+def escape_room_update(request, slug):
+    """Edita una EscapeRoom. Solo el autor puede hacerlo."""
+    room = get_object_or_404(EscapeRoom, slug=slug)
+
+    # Permiso: solo el autor
+    if room.creator != request.user:
+        messages.error(request, "No tienes permiso para editar esta aventura.")
+        return redirect("escape_arenas:room_detail", slug=room.slug)
+
+    if request.method == "POST":
+        form = EscapeRoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Aventura actualizada correctamente.")
+            return redirect("escape_arenas:room_detail", slug=room.slug)
+    else:
+        form = EscapeRoomForm(instance=room)
+
+    return render(request, "escape_arenas/escape_room_form.html", {
+        "form": form,
+        "action": "update",
+        "room": room,
+    })
+
+
+@login_required
+def escape_room_delete(request, slug):
+    """Borra una EscapeRoom. Solo el autor puede hacerlo."""
+    room = get_object_or_404(EscapeRoom, slug=slug)
+
+    # Permiso: solo el autor
+    if room.creator != request.user:
+        messages.error(request, "No tienes permiso para borrar esta aventura.")
+        return redirect("escape_arenas:room_detail", slug=room.slug)
+
+    if request.method == "POST":
+        room.delete()
+        messages.success(request, "Aventura borrada correctamente.")
+        return redirect("escape_arenas:my_rooms")
+
+    return render(request, "escape_arenas/escape_room_confirm_delete.html", {
+        "room": room,
+    })

@@ -8,6 +8,12 @@ urlpatterns = [
     path("", views.room_list, name="room_list"),
     path("room/<slug:slug>/", views.room_detail, name="room_detail"),
 
+    # CRUD del profesor (ANTES de las rutas de partida)
+    path("my-rooms/", views.my_escape_rooms, name="my_rooms"),
+    path("room/create/", views.escape_room_create, name="room_create"),
+    path("room/<slug:slug>/edit/", views.escape_room_update, name="room_update"),
+    path("room/<slug:slug>/delete/", views.escape_room_delete, name="room_delete"),
+
     # Partida
     path("room/<slug:slug>/start/", views.escape_start, name="escape_start"),
     path("session/<uuid:pk>/play/", views.escape_play, name="play"),
