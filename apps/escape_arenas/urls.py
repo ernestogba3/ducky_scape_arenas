@@ -14,6 +14,11 @@ urlpatterns = [
     path("room/<slug:slug>/edit/", views.escape_room_update, name="room_update"),
     path("room/<slug:slug>/delete/", views.escape_room_delete, name="room_delete"),
 
+    # CRUD anidado genérico
+    path("child/create/<str:child_type>/<int:parent_pk>/", views.child_create, name="child_create"),
+    path("child/<str:child_type>/<int:pk>/edit/", views.child_update, name="child_update"),
+    path("child/<str:child_type>/<int:pk>/delete/", views.child_delete, name="child_delete"),
+
     # Partida
     path("room/<slug:slug>/start/", views.escape_start, name="escape_start"),
     path("session/<uuid:pk>/play/", views.escape_play, name="play"),

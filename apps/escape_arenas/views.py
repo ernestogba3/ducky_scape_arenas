@@ -4,8 +4,11 @@ from django.contrib import messages
 from django.utils import timezone
 
 from .forms import EscapeSubmitForm
-from .forms import EscapeRoomForm
-from .models import EscapeRoom, UserEscapeSession, Stage, Hint, EscapeSettlement
+from .forms import EscapeRoomForm, RoomForm, StageForm, PuzzleForm, HintForm
+from .models import (
+    EscapeRoom, Room, Stage, Puzzle, Hint,
+    UserEscapeSession, EscapeSettlement,
+)
 from .services import (
     check_stage_answer,
     expire_session_if_needed,
@@ -16,7 +19,36 @@ from .services import (
     settle_session,
     use_hint,
 )
-
+CHILD_REGISTRY = {
+    "room": {
+        "model": Room,
+        "form": RoomForm,
+        "parent_field": "escape_room",
+        "parent_model": EscapeRoom,
+        "label": "Sala",
+    },
+    "stage": {
+        "model": Stage,
+        "form": StageForm,
+        "parent_field": "room",
+        "parent_model": Room,
+        "label": "Etapa",
+    },
+    "puzzle": {
+        "model": Puzzle,
+        "form": PuzzleForm,
+        "parent_field": "stage",
+        "parent_model": Stage,
+        "label": "Puzzle",
+    },
+    "hint": {
+        "model": Hint,
+        "form": HintForm,
+        "parent_field": "puzzle",  # o "room", pero para MVP usamos puzzle
+        "parent_model": Puzzle,
+        "label": "Pista",
+    },
+}
 
 # ──────────────────────────────────────────────────────────────
 # Catálogo
@@ -321,4 +353,143 @@ def escape_room_delete(request, slug):
 
     return render(request, "escape_arenas/escape_room_confirm_delete.html", {
         "room": room,
+    })
+
+def _user_owns_escape_room(user, escape_room):
+    """Devuelve True si el usuario es el creador de la EscapeRoom."""
+    return escape_room.creator == user
+
+
+def _get_escape_room_of_child(child_type, child):
+    """Dado un hijo (Room, Stage, Puzzle, Hint), devuelve su EscapeRoom raíz."""
+    if child_type == "room":
+        return child.escape_room
+    if child_type == "stage":
+        return child.room.escape_room
+    if child_type == "puzzle":
+        return child.stage.room.escape_room
+    if child_type == "hint":
+        if child.puzzle:
+            return child.puzzle.stage.room.escape_room
+        return child.room.escape_room
+    raise ValueError(f"Tipo de hijo desconocido: {child_type}")
+
+# ──────────────────────────────────────────────────────────────
+# CRUD anidado genérico para hijos de EscapeRoom
+# ──────────────────────────────────────────────────────────────
+@login_required
+def child_create(request, child_type, parent_pk):
+    """Crea un hijo (Room, Stage, Puzzle, Hint) dentro de un padre."""
+    if child_type not in CHILD_REGISTRY:
+        messages.error(request, "Tipo de elemento desconocido.")
+        return redirect("escape_arenas:room_list")
+
+    config = CHILD_REGISTRY[child_type]
+    parent_model = config["parent_model"]
+    parent_field = config["parent_field"]
+    form_class = config["form"]
+    model = config["model"]
+    label = config["label"]
+
+    # Obtener el padre
+    parent = get_object_or_404(parent_model, pk=parent_pk)
+
+    # Comprobar permisos: el usuario debe ser el autor de la EscapeRoom raíz
+    if child_type == "room":
+        escape_room = parent  # el padre es la EscapeRoom
+    else:
+        escape_room = _get_escape_room_of_child(
+            # para el padre, subimos un nivel
+            child_type, parent
+        ) if child_type in ("puzzle", "hint") else parent.escape_room
+
+    if not _user_owns_escape_room(request.user, escape_room):
+        messages.error(request, "No tienes permiso para añadir elementos aquí.")
+        return redirect("escape_arenas:room_detail", slug=escape_room.slug)
+
+    if request.method == "POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            child = form.save(commit=False)
+            # Asignar el padre automáticamente
+            setattr(child, parent_field, parent)
+            child.save()
+            messages.success(request, f"{label} creada correctamente.")
+            return redirect("escape_arenas:room_detail", slug=escape_room.slug)
+    else:
+        form = form_class()
+
+    return render(request, "escape_arenas/child_form.html", {
+        "form": form,
+        "action": "create",
+        "label": label,
+        "escape_room": escape_room,
+    })
+
+
+@login_required
+def child_update(request, child_type, pk):
+    """Edita un hijo (Room, Stage, Puzzle, Hint)."""
+    if child_type not in CHILD_REGISTRY:
+        messages.error(request, "Tipo de elemento desconocido.")
+        return redirect("escape_arenas:room_list")
+
+    config = CHILD_REGISTRY[child_type]
+    model = config["model"]
+    form_class = config["form"]
+    label = config["label"]
+
+    child = get_object_or_404(model, pk=pk)
+
+    # Comprobar permisos
+    escape_room = _get_escape_room_of_child(child_type, child)
+    if not _user_owns_escape_room(request.user, escape_room):
+        messages.error(request, "No tienes permiso para editar este elemento.")
+        return redirect("escape_arenas:room_detail", slug=escape_room.slug)
+
+    if request.method == "POST":
+        form = form_class(request.POST, instance=child)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"{label} actualizada correctamente.")
+            return redirect("escape_arenas:room_detail", slug=escape_room.slug)
+    else:
+        form = form_class(instance=child)
+
+    return render(request, "escape_arenas/child_form.html", {
+        "form": form,
+        "action": "update",
+        "label": label,
+        "escape_room": escape_room,
+    })
+
+
+@login_required
+def child_delete(request, child_type, pk):
+    """Borra un hijo (Room, Stage, Puzzle, Hint)."""
+    if child_type not in CHILD_REGISTRY:
+        messages.error(request, "Tipo de elemento desconocido.")
+        return redirect("escape_arenas:room_list")
+
+    config = CHILD_REGISTRY[child_type]
+    model = config["model"]
+    label = config["label"]
+
+    child = get_object_or_404(model, pk=pk)
+
+    # Comprobar permisos
+    escape_room = _get_escape_room_of_child(child_type, child)
+    if not _user_owns_escape_room(request.user, escape_room):
+        messages.error(request, "No tienes permiso para borrar este elemento.")
+        return redirect("escape_arenas:room_detail", slug=escape_room.slug)
+
+    if request.method == "POST":
+        child.delete()
+        messages.success(request, f"{label} borrada correctamente.")
+        return redirect("escape_arenas:room_detail", slug=escape_room.slug)
+
+    return render(request, "escape_arenas/child_confirm_delete.html", {
+        "child": child,
+        "label": label,
+        "escape_room": escape_room,
     })
