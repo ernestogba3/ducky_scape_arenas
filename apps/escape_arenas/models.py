@@ -46,6 +46,13 @@ class EscapeRoom(models.Model):
         choices=Difficulty.choices,
         default=Difficulty.MEDIUM,
     )
+    creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="created_escape_rooms",
+        null=True,  # temporal para no romper datos existentes
+        blank=True,
+    )
     # Duración estimada en minutos, para enseñar al jugador antes de empezar.
     estimated_duration = models.PositiveIntegerField(help_text="Minutos estimados")
     # Límite real de la partida en segundos (lo que antes vivía en la sesión).
