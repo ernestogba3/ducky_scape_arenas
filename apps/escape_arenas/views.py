@@ -1,8 +1,9 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
+"""Vistas y contexto de la interfaz. No enviar soluciones a HTML o JavaScript."""
 from django.contrib import messages
-from django.utils import timezone
-
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Sum, Q
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 from .forms import EscapeSubmitForm
 from .forms import EscapeRoomForm, RoomForm, StageForm, PuzzleForm, HintForm
 from .models import (
@@ -55,101 +56,58 @@ CHILD_REGISTRY = {
 # ──────────────────────────────────────────────────────────────
 @login_required
 def room_list(request):
-    rooms = EscapeRoom.objects.filter(is_active=True)
-    return render(request, "escape_arenas/room_list.html", {"rooms": rooms})
-
+    rooms=EscapeRoom.objects.filter(is_active=True).annotate(stage_count=Count('rooms__stages',distinct=True))
+    q=request.GET.get('q','').strip();difficulty=request.GET.get('difficulty','')
+    if q:rooms=rooms.filter(Q(name__icontains=q)|Q(description__icontains=q))
+    if difficulty:rooms=rooms.filter(difficulty=difficulty)
+    return render(request,'escape_arenas/room_list.html',{'rooms':rooms,'q':q,'difficulty':difficulty,'difficulties':EscapeRoom.Difficulty.choices})
 
 @login_required
-def room_detail(request, slug):
-    room = get_object_or_404(EscapeRoom, slug=slug, is_active=True)
-    return render(request, "escape_arenas/room_detail.html", {"room": room})
+def room_detail(request,slug):
+    room=get_object_or_404(EscapeRoom,slug=slug,is_active=True)
+    stats=room.rooms.aggregate(stage_count=Count('stages',distinct=True),points=Sum('stages__puzzles__points'))
+    active=request.user.escape_sessions.filter(escape_room=room,status='PLAYING').first()
+    return render(request,'escape_arenas/room_detail.html',{'room':room,'stats':stats,'active':active})
 
-
-# ──────────────────────────────────────────────────────────────
-# Inicio / reanudación de partida
-# ──────────────────────────────────────────────────────────────
 @login_required
-def escape_start(request, slug):
-    escape_room = get_object_or_404(EscapeRoom, slug=slug, is_active=True)
-
-    if request.method != "POST":
-        return redirect("escape_arenas:room_detail", slug=slug)
-
-    # Si ya tiene una sesión PLAYING en esta sala, la reanuda
-    existing = (
-        UserEscapeSession.objects
-        .filter(
-            user=request.user,
-            escape_room=escape_room,
-            status=UserEscapeSession.Status.PLAYING,
-        )
-        .first()
-    )
-    if existing:
-        messages.info(request, "Reanudando tu partida en curso.")
-        return redirect("escape_arenas:play", pk=existing.pk)
-
-    try:
-        session = start_session(user=request.user, escape_room=escape_room)
+@require_POST
+def escape_start(request,slug):
+    room=get_object_or_404(EscapeRoom,slug=slug,is_active=True)
+    active=request.user.escape_sessions.filter(escape_room=room,status='PLAYING').first()
+    if active:
+        expire_session_if_needed(active)
+        if active.status=='PLAYING':
+            messages.info(request,'Reanudando tu partida en curso.')
+            return redirect('escape_arenas:play',pk=active.pk)
+    try:s=start_session(user=request.user,escape_room=room)
     except ValueError as exc:
-        messages.error(request, str(exc))
-        return redirect("escape_arenas:room_detail", slug=slug)
+        messages.error(request,str(exc));return redirect('escape_arenas:room_detail',slug=slug)
+    messages.success(request,'¡Aventura iniciada! Resuelve las fases en orden.')
+    return redirect('escape_arenas:play',pk=s.pk)
 
-    messages.success(request, "¡Aventura iniciada! Buena suerte.")
-    return redirect("escape_arenas:play", pk=session.pk)
-
-# ──────────────────────────────────────────────────────────────
-# Pantalla de juego
-# ──────────────────────────────────────────────────────────────
 @login_required
-def escape_play(request, pk):
-    session = get_object_or_404(
-        UserEscapeSession.objects.select_related("escape_room"),
-        pk=pk,
-        user=request.user,
-    )
+def escape_play(request,pk):
+    s=owned(request,pk);expire_session_if_needed(s)
+    if s.status!='PLAYING':return redirect('escape_arenas:result',pk=pk)
+    stage=s.current_stage;puzzle=stage.puzzles.order_by('order').first()
+    total=s.stage_progress.count();completed=s.stage_progress.filter(is_solved=True).count()
+    used=s.hint_usages.filter(Q(hint__puzzle__stage=stage)|Q(hint__room=stage.room)).select_related('hint')
+    return render(request,'escape_arenas/play.html',{'session':s,'stage':stage,'puzzle':puzzle,
+        'options':puzzle.config.get('options',[]) if puzzle.type=='MULTIPLE_CHOICE' else [],
+        'form':EscapeSubmitForm(),'remaining_seconds':get_remaining_seconds(s),
+        'hint':get_available_hint(s,stage),'used_hints':used,'total':total,'completed':completed,
+        'percentage':round(100*completed/total) if total else 0,'phase_number':completed+1})
 
-    if expire_session_if_needed(session):
-        messages.error(request, "Tiempo agotado.")
-        return redirect("escape_arenas:result", pk=session.pk)
-
-    if session.status != UserEscapeSession.Status.PLAYING:
-        return redirect("escape_arenas:result", pk=session.pk)
-
-    stage = session.current_stage
-    if stage is None:
-        messages.error(request, "No hay prueba actual.")
-        return redirect("escape_arenas:result", pk=session.pk)
-    hint = get_available_hint(session, stage)
-    form = EscapeSubmitForm()
-    return render(request, "escape_arenas/play.html", {
-        "session": session,
-        "stage": stage,
-        "form": form,
-        "remaining_seconds": get_remaining_seconds(session),
-        "hint": hint,
-    })
-
-
-# ──────────────────────────────────────────────────────────────
-# Enviar respuesta
-# ──────────────────────────────────────────────────────────────
 @login_required
-def escape_submit(request, pk):
-    session = get_object_or_404(
-        UserEscapeSession.objects.select_related("escape_room"),
-        pk=pk,
-        user=request.user,
-    )
-
-    if request.method != "POST" or session.status != UserEscapeSession.Status.PLAYING:
-        return redirect("escape_arenas:play", pk=session.pk)
-
-    if expire_session_if_needed(session):
-        messages.error(request, "Tiempo agotado.")
-        return redirect("escape_arenas:result", pk=session.pk)
-
-    form = EscapeSubmitForm(request.POST)
+@require_POST
+def escape_submit(request,pk):
+    s=owned(request,pk);expire_session_if_needed(s)
+    if s.status!='PLAYING':return redirect('escape_arenas:result',pk=pk)
+    puzzle=s.current_stage.puzzles.order_by('order').first()
+    if str(puzzle.pk)!=request.POST.get('puzzle_id'):
+        messages.warning(request,'La fase ha cambiado. Revisa la prueba actual.')
+        return redirect('escape_arenas:play',pk=pk)
+    form=EscapeSubmitForm(request.POST)
     if not form.is_valid():
         messages.error(request, "Respuesta no válida.")
         return redirect("escape_arenas:play", pk=session.pk)
@@ -224,10 +182,6 @@ def escape_hint(request, pk):
 
     return redirect("escape_arenas:play", pk=session.pk)
 
-
-# ──────────────────────────────────────────────────────────────
-# Resultado e historial
-# ──────────────────────────────────────────────────────────────
 @login_required
 def escape_result(request, pk):
     session = get_object_or_404(
