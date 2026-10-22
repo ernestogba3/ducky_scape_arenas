@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'apps.escape_arenas',
-    'users',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
