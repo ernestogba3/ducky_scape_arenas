@@ -63,14 +63,15 @@ session.escape_room.name }}{% endblock %} {% block escape_content %}
       {% if options %}
       <fieldset>
         <legend>Elige tu respuesta</legend>
-        {% for option in options %}<label class="choice"
-          ><input type="radio" name="answer" value="{{ option }}" required /> {{
-          option }}</label
-        >{% endfor %}
+        {% for option in options %}
+        <label class="choice">
+          <input type="radio" name="answer" value="{{ option }}" required />
+          {{ option }}
+        </label>
+        {% endfor %}
       </fieldset>
-      {% else %}{{ form.as_p }}{% endif %}<button class="btn primary">
-        Enviar respuesta →
-      </button>
+      {% else %} {{ form.as_p }} {% endif %}
+      <button class="btn primary">Enviar respuesta →</button>
     </form>
   </article>
   <aside class="mission-card">

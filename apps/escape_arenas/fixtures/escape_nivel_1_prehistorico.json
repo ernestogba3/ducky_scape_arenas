@@ -1,0 +1,541 @@
+[
+  {
+    "model": "escape_arenas.escaperoom",
+    "pk": 9,
+    "fields": {
+      "name": "Nivel 1 · La Cacería del Pato Ancestral",
+      "slug": "caceria-del-pato-ancestral",
+      "description": "Hace milenios, cuando los Duckys aún compartían fuego con los mamuts, la Tribu del Alba era la mejor cazadora del valle. Una noche, el Chamán Qrak-Qrak partió a la montaña y no volvió. Con él se perdió el Códice del Pato Ancestral, el saber que mantenía la caza unida. Tres fragmentos del códice quedaron ocultos en las cuevas sagradas, grabados en piedras rituales. Recupera los tres, pronuncia el conjuro ancestral y despierta al Gran Pato que guía a la tribu.",
+      "difficulty": "EASY",
+      "estimated_duration": 25,
+      "time_limit_seconds": 1800,
+      "final_solution_hash": "HOGUERA LUNA PATO",
+      "version": 2,
+      "is_active": true,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 25,
+    "fields": {
+      "escape_room": 9,
+      "name": "Cueva de la Hoguera",
+      "description": "El primer refugio de la tribu. La hoguera central reparte la luz y los papeles: quien ve lejos, quien marca el camino y quienes recogen la leña. Aquí nace la caza.",
+      "order": 1,
+      "image": null,
+      "door_solution_hash": "HOGUERA",
+      "final_fragment": "Primera palabra del Códice: HOGUERA.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 65,
+    "fields": {
+      "room": 25,
+      "name": "Entrada a la Cueva",
+      "description": "Las brasas aún humean en el centro. En la pared, tres figuras grabadas con sangre de bisonte: una señala el horizonte, otra empuña una lanza, las últimas recogen leña. Antes de nombrarlas, el Chamán pide un primer susurro: el nombre del guía de la tribu.",
+      "order": 1,
+      "type": "INTRO",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "El Chamán asiente desde las sombras. La cueva se abre ante ti.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 61,
+    "fields": {
+      "stage": 65,
+      "title": "El Primer Susurro",
+      "description": "Para que la cueva se abra, pronuncia el nombre del animal que guía a la Tribu del Alba y da nombre a este Códice.",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Pato",
+      "max_attempts": 5,
+      "points": 10,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-26T10:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 63,
+    "fields": {
+      "puzzle": 61,
+      "room": null,
+      "text": "El Chamán susurra: aparece también en el nombre del Códice que buscas.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 5,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-26T10:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 66,
+    "fields": {
+      "room": 25,
+      "name": "El que señala el horizonte",
+      "description": "La primera figura grabada en la pared mira hacia el horizonte: ve lejos y marca qué presas valen la pena cazar. Dale su nombre para despertarla.",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "La primera figura cobra vida. La hoguera cruje con fuerza renovada.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 49,
+    "fields": {
+      "stage": 66,
+      "title": "El vigía del horizonte",
+      "description": "El Chamán decía que esa figura veía más allá de los árboles y marcaba qué presas valían la pena cazar. ¿Qué rol de Scrum es responsable del Product Backlog?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Product Owner",
+      "max_attempts": 5,
+      "points": 90,
+      "version": 2,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 51,
+    "fields": {
+      "puzzle": 49,
+      "room": null,
+      "text": "El Chamán susurra: representa a quien espera la carne en la hoguera.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 67,
+    "fields": {
+      "room": 25,
+      "name": "Las Marcas en la Piedra",
+      "description": "El Chamán grababa en piedra las presas de la próxima luna, para que la tribu supiera qué cazar al amanecer. ¿Cómo llamaba a esas marcas de la próxima jornada?",
+      "order": 4,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "La piedra se abre. Dentro, la primera palabra del Códice brilla con luz de ascua: HOGUERA.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 81,
+    "fields": {
+      "room": 25,
+      "name": "El que camina delante y aparta las ramas",
+      "description": "La segunda figura abre paso al grupo. No lleva la lanza, pero sin su paso la cacería se pierde: camina delante, aparta las ramas y mantiene el ritmo. Nómbrala para despertarla.",
+      "order": 3,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "La segunda figura cobra vida. El sendero se abre ante tu paso.",
+      "created_at": "2026-10-26T10:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 50,
+    "fields": {
+      "stage": 81,
+      "title": "El que aparta las ramas",
+      "description": "No es el jefe de la tribu, pero sin su paso la cacería se pierde. Camina delante, aparta las ramas y mantiene el ritmo del grupo. ¿Qué rol de Scrum facilita las ceremonias y elimina impedimentos?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Scrum Master",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 2,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 52,
+    "fields": {
+      "puzzle": 50,
+      "room": null,
+      "text": "La anciana recuerda: no es el jefe del equipo.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 51,
+    "fields": {
+      "stage": 67,
+      "title": "La Luna Próxima",
+      "description": "La roca junto a la hoguera guarda las tareas de la próxima caza, elegidas por el Chamán entre todas las que grabó. ¿Cómo se llama la lista de tareas seleccionadas para un Sprint?",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "Sprint Backlog",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 2,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 53,
+    "fields": {
+      "puzzle": 51,
+      "room": null,
+      "text": "La piedra responde: se extrae del gran grabado del Chamán.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 26,
+    "fields": {
+      "escape_room": 9,
+      "name": "El Barranco de la Luna",
+      "description": "Entre riscos que se abren al cielo, la tribu lee los ciclos. Aquí se mide el tiempo: tres amaneceres por paso, cuatro lunas por ciclo. Al final del barranco espera un tótem silencioso.",
+      "order": 2,
+      "image": null,
+      "door_solution_hash": "LUNA",
+      "final_fragment": "Segunda palabra del Códice: LUNA.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 68,
+    "fields": {
+      "room": 26,
+      "name": "El Rito del Amanecer",
+      "description": "Cada mañana, al despuntar la luz, la tribu se reúne de pie alrededor de las brasas. Contar lo visto, decir lo próximo, nunca sentarse. El rito es corto por un motivo.",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "El amanecer se detiene un instante. La luz te acompaña.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 52,
+    "fields": {
+      "stage": 68,
+      "title": "El Canto Breve",
+      "description": "El canto del amanecer no puede alargarse: la caza espera. ¿Cuántos minutos dura como máximo el Daily Scrum?",
+      "type": "NUMBER",
+      "config": {},
+      "solution_hash": "15",
+      "max_attempts": 5,
+      "points": 70,
+      "version": 2,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 54,
+    "fields": {
+      "puzzle": 52,
+      "room": null,
+      "text": "El viento del alba: es una reunión breve, de pie, al amanecer.",
+      "order": 1,
+      "coin_price": 5,
+      "penalty_seconds": 10,
+      "penalty_points": 10,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 69,
+    "fields": {
+      "room": 26,
+      "name": "El Ciclo de la Luna Llena",
+      "description": "Entre una luna llena y la siguiente, la tribu cumple su ciclo de caza. ¿De cuánto es el ciclo completo, cuando ya nada puede alargarse más?",
+      "order": 2,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Las cuatro lunas se dibujan en el cielo. El ciclo se cierra.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 53,
+    "fields": {
+      "stage": 69,
+      "title": "De Luna a Luna",
+      "description": "El Chamán decía que ningún ciclo podía pasar de cuatro lunas enteras. ¿Cuál es la duración máxima recomendada de un Sprint en Scrum?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": ["1 semana", "2 semanas", "4 semanas", "3 meses"]
+      },
+      "solution_hash": "4 semanas",
+      "max_attempts": 5,
+      "points": 80,
+      "version": 2,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 55,
+    "fields": {
+      "puzzle": 53,
+      "room": null,
+      "text": "La luna llama: entre una luna y cuatro, nunca más.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 70,
+    "fields": {
+      "room": 26,
+      "name": "El Tótem del Barranco",
+      "description": "Al final del barranco, un tótem de piedra bloquea el paso. Solo se abre si pronuncias la palabra sagrada de este lugar, la que acabas de ganar.",
+      "order": 3,
+      "type": "LOCK",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "El tótem resuena con un trueno sordo y se desliza a un lado. El camino continúa.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 62,
+    "fields": {
+      "stage": 70,
+      "title": "La Palabra del Tótem",
+      "description": "El tótem exige la palabra sagrada del Barranco de la Luna. Pronúnciala tal como la viste grabada.",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "LUNA",
+      "max_attempts": 5,
+      "points": 30,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-26T10:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 64,
+    "fields": {
+      "puzzle": 62,
+      "room": null,
+      "text": "El viento del barranco canta: fíjate en la segunda palabra del Códice.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-26T10:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.room",
+    "pk": 27,
+    "fields": {
+      "escape_room": 9,
+      "name": "La Cima del Gran Pato",
+      "description": "La última subida. Desde la cima se ve el valle entero y el río que lo cruza. Aquí la tribu descansa al fin de cada caza, con una mirada hacia la presa y otra hacia los compañeros. Y aquí, por fin, se pronuncia el conjuro.",
+      "order": 3,
+      "image": null,
+      "door_solution_hash": "PATO",
+      "final_fragment": "Tercera palabra del Códice: PATO.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 71,
+    "fields": {
+      "room": 27,
+      "name": "La Mirada Doble",
+      "description": "Al final de cada ciclo, la tribu se sienta junto al río y hace dos ritos distintos: en uno mira la presa que trajeron, en el otro se miran unos a otros. Ambos importan. ¿Cómo distingue Scrum estos dos ritos?",
+      "order": 1,
+      "type": "PUZZLE",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "Dos miradas, un solo rito. El río guarda silencio y te deja pasar.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 54,
+    "fields": {
+      "stage": 71,
+      "title": "Lo cazado y los cazadores",
+      "description": "Una mirada se dirige a la carne traída al poblado; la otra, a quienes la trajeron. ¿Cuál es la diferencia entre Sprint Retrospective y Sprint Review?",
+      "type": "MULTIPLE_CHOICE",
+      "config": {
+        "options": [
+          "Son lo mismo",
+          "La Retro revisa el proceso del equipo; la Review revisa el producto",
+          "La Review revisa el proceso; la Retro revisa el producto",
+          "La Retro es solo para el Scrum Master"
+        ]
+      },
+      "solution_hash": "La Retro revisa el proceso del equipo; la Review revisa el producto",
+      "max_attempts": 5,
+      "points": 100,
+      "version": 2,
+      "order": 1,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 56,
+    "fields": {
+      "puzzle": 54,
+      "room": null,
+      "text": "El río habla: una mirada hacia la presa, otra hacia los cazadores.",
+      "order": 1,
+      "coin_price": 10,
+      "penalty_seconds": 20,
+      "penalty_points": 15,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.stage",
+    "pk": 72,
+    "fields": {
+      "room": 27,
+      "name": "El Conjuro del Pato Ancestral",
+      "description": "Las tres palabras del Códice están ante ti: HOGUERA, LUNA y PATO. Únelas en el orden del rito, separadas por un espacio, para despertar al Gran Pato Ancestral y devolver la caza a tu tribu.",
+      "order": 2,
+      "type": "FINAL",
+      "completion_condition": {
+        "require": "all_puzzles"
+      },
+      "time_limit": null,
+      "fragment": "El Gran Pato Ancestral despliega las alas sobre el valle. La caza vuelve a tu tribu.",
+      "created_at": "2026-10-14T08:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.puzzle",
+    "pk": 63,
+    "fields": {
+      "stage": 72,
+      "title": "El Conjuro",
+      "description": "Pronuncia el conjuro completo: las tres palabras del Códice en el orden del rito, separadas por un espacio y en mayúsculas.",
+      "type": "TEXT",
+      "config": {},
+      "solution_hash": "HOGUERA LUNA PATO",
+      "max_attempts": 5,
+      "points": 50,
+      "version": 1,
+      "order": 1,
+      "created_at": "2026-10-26T10:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  },
+  {
+    "model": "escape_arenas.hint",
+    "pk": 65,
+    "fields": {
+      "puzzle": 63,
+      "room": null,
+      "text": "La Tribu canta: primero la hoguera, luego la luna, al final el Pato Ancestral.",
+      "order": 1,
+      "coin_price": 15,
+      "penalty_seconds": 30,
+      "penalty_points": 25,
+      "unlock_after_seconds": 0,
+      "created_at": "2026-10-26T10:00:00Z",
+      "updated_at": "2026-10-26T10:00:00Z"
+    }
+  }
+]
