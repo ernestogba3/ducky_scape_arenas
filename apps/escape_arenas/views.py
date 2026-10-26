@@ -20,6 +20,14 @@ from .services import (
     settle_session,
     use_hint,
 )
+def owned(request, pk):
+    """Devuelve la UserEscapeSession `pk` si es del usuario; 404 si no."""
+    return get_object_or_404(
+        UserEscapeSession.objects.select_related("escape_room"),
+        pk=pk,
+        user=request.user,
+    )
+
 CHILD_REGISTRY = {
     "room": {
         "model": Room,
@@ -86,39 +94,66 @@ def escape_start(request,slug):
     return redirect('escape_arenas:play',pk=s.pk)
 
 @login_required
-def escape_play(request,pk):
-    s=owned(request,pk);expire_session_if_needed(s)
-    if s.status!='PLAYING':return redirect('escape_arenas:result',pk=pk)
-    stage=s.current_stage;puzzle=stage.puzzles.order_by('order').first()
-    total=s.stage_progress.count();completed=s.stage_progress.filter(is_solved=True).count()
-    used=s.hint_usages.filter(Q(hint__puzzle__stage=stage)|Q(hint__room=stage.room)).select_related('hint')
-    return render(request,'escape_arenas/play.html',{'session':s,'stage':stage,'puzzle':puzzle,
-        'options':puzzle.config.get('options',[]) if puzzle.type=='MULTIPLE_CHOICE' else [],
-        'form':EscapeSubmitForm(),'remaining_seconds':get_remaining_seconds(s),
-        'hint':get_available_hint(s,stage),'used_hints':used,'total':total,'completed':completed,
-        'percentage':round(100*completed/total) if total else 0,'phase_number':completed+1})
+def escape_play(request, pk):
+    session = owned(request, pk)
+    expire_session_if_needed(session)
+
+    if session.status != "PLAYING":
+        return redirect("escape_arenas:result", pk=pk)
+
+    stage = session.current_stage
+    puzzle = stage.puzzles.order_by("order").first()
+    total = session.stage_progress.count()
+    completed = session.stage_progress.filter(is_solved=True).count()
+    used = (
+        session.hint_usages
+        .filter(Q(hint__puzzle__stage=stage) | Q(hint__room=stage.room))
+        .select_related("hint")
+    )
+
+    return render(request, "escape_arenas/play.html", {
+        "session": session,
+        "stage": stage,
+        "puzzle": puzzle,
+        "options": puzzle.config.get("options", []) if puzzle.type == "MULTIPLE_CHOICE" else [],
+        "form": EscapeSubmitForm(),
+        "remaining_seconds": get_remaining_seconds(session),
+        "hint": get_available_hint(session, stage),
+        "used_hints": used,
+        "total": total,
+        "completed": completed,
+        "percentage": round(100 * completed / total) if total else 0,
+        "phase_number": completed + 1,
+    })
 
 @login_required
 @require_POST
-def escape_submit(request,pk):
-    s=owned(request,pk);expire_session_if_needed(s)
-    if s.status!='PLAYING':return redirect('escape_arenas:result',pk=pk)
-    puzzle=s.current_stage.puzzles.order_by('order').first()
-    if str(puzzle.pk)!=request.POST.get('puzzle_id'):
-        messages.warning(request,'La fase ha cambiado. Revisa la prueba actual.')
-        return redirect('escape_arenas:play',pk=pk)
-    form=EscapeSubmitForm(request.POST)
-    if not form.is_valid():
-        messages.error(request, "Respuesta no válida.")
-        return redirect("escape_arenas:play", pk=session.pk)
+def escape_submit(request, pk):
+    session = owned(request, pk)
+    expire_session_if_needed(session)
+
+    if session.status != UserEscapeSession.Status.PLAYING:
+        return redirect("escape_arenas:result", pk=session.pk)
 
     stage = session.current_stage
     if stage is None:
         messages.error(request, "No hay prueba actual.")
         return redirect("escape_arenas:play", pk=session.pk)
+
     puzzle = stage.puzzles.order_by("order").first()
     if puzzle is None:
         messages.error(request, "Esta prueba no tiene puzzle.")
+        return redirect("escape_arenas:play", pk=session.pk)
+
+    # El cliente envía el puzzle_id que creía estar resolviendo;
+    # si entre tanto la fase avanzó, no procesamos la respuesta.
+    if str(puzzle.pk) != request.POST.get("puzzle_id"):
+        messages.warning(request, "La fase ha cambiado. Revisa la prueba actual.")
+        return redirect("escape_arenas:play", pk=session.pk)
+
+    form = EscapeSubmitForm(request.POST)
+    if not form.is_valid():
+        messages.error(request, "Respuesta no válida.")
         return redirect("escape_arenas:play", pk=session.pk)
 
     answer = form.cleaned_data["answer"]
@@ -144,7 +179,6 @@ def escape_submit(request,pk):
         return redirect("escape_arenas:result", pk=session.pk)
 
     return redirect("escape_arenas:play", pk=session.pk)
-
 
 # ──────────────────────────────────────────────────────────────
 # Pistas
