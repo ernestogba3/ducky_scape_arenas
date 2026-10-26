@@ -1,7 +1,56 @@
-{% extends 'escape_arenas/base.html' %}
-{% block escape_content %}
+{% extends 'escape_arenas/base.html' %} {% block escape_content %}
 <a href="{% url 'escape_arenas:room_list' %}">← Volver al catálogo</a>
-<header class="escape-hero"><span class="escape-kicker">{{ room.get_difficulty_display }} · MISIÓN INDIVIDUAL</span><h1>{{ room.name }}</h1><p>{{ room.description }}</p></header>
-<div class="detail-grid"><section class="mission-card"><h2>Antes de entrar</h2><dl class="metric-grid"><div><dt>Tiempo límite</dt><dd>{{ room.time_limit_seconds }} s</dd></div><div><dt>Fases</dt><dd>{{ stats.stage_count }}</dd></div><div><dt>Puntos posibles</dt><dd>{{ stats.points|default:0 }}</dd></div><div><dt>Bonus al escapar</dt><dd>10 XP locales</dd></div></dl><form method="post" action="{% url 'escape_arenas:escape_start' room.slug %}">{% csrf_token %}<button class="btn primary">{% if active %}Reanudar partida{% else %}Iniciar escape{% endif %} →</button></form><a class="subtle-link" href="{% url 'escape_arenas:ranking' room.slug %}">Ver ranking</a></section>
-<section class="mission-card"><h2>Reglas de la misión</h2><ol class="rules"><li>Resuelve cada fase para desbloquear la siguiente.</li><li>El servidor controla el reloj; recargar no recupera tiempo.</li><li>Una respuesta correcta suma los puntos de la prueba.</li><li>Antes de pedir una pista verás su coste en puntos y segundos.</li><li>Los errores no restan puntos. Si la prueba limita intentos, agotarlos cierra la partida.</li><li>XP y ranking son locales; no se abonan monedas en otros módulos.</li></ol></section></div>
+<header class="escape-hero">
+  <span class="escape-kicker"
+    >{{ room.get_difficulty_display }} · MISIÓN INDIVIDUAL</span
+  >
+  <h1>{{ room.name }}</h1>
+  <p>{{ room.description }}</p>
+</header>
+<div class="detail-grid">
+  <section class="mission-card">
+    <h2>Antes de entrar</h2>
+    <dl class="metric-grid">
+      <div>
+        <dt>Tiempo límite</dt>
+        <dd>{{ room.time_limit_seconds }} s</dd>
+      </div>
+      <div>
+        <dt>Fases</dt>
+        <dd>{{ stats.stage_count }}</dd>
+      </div>
+      <div>
+        <dt>Puntos posibles</dt>
+        <dd>{{ stats.points|default:0 }}</dd>
+      </div>
+      <div>
+        <dt>Bonus al escapar</dt>
+        <dd>10 XP locales</dd>
+      </div>
+    </dl>
+    <form
+      method="post"
+      action="{% url 'escape_arenas:escape_start' room.slug %}"
+    >
+      {% csrf_token %}<button class="btn primary">
+        {% if active %}Reanudar partida{% else %}Iniciar escape{% endif %} →
+      </button>
+    </form>
+    {% comment %} <a class="subtle-link" href="{% url '#' room.slug %}">Ver ranking</a> {% endcomment %}
+  </section>
+  <section class="mission-card">
+    <h2>Reglas de la misión</h2>
+    <ol class="rules">
+      <li>Resuelve cada fase para desbloquear la siguiente.</li>
+      <li>El servidor controla el reloj; recargar no recupera tiempo.</li>
+      <li>Una respuesta correcta suma los puntos de la prueba.</li>
+      <li>Antes de pedir una pista verás su coste en puntos y segundos.</li>
+      <li>
+        Los errores no restan puntos. Si la prueba limita intentos, agotarlos
+        cierra la partida.
+      </li>
+      <li>XP y ranking son locales; no se abonan monedas en otros módulos.</li>
+    </ol>
+  </section>
+</div>
 {% endblock %}

@@ -1,13 +1,109 @@
-{% extends 'escape_arenas/base.html' %}
-{% block escape_title %}En misión · {{ session.escape_room.name }}{% endblock %}
-{% block escape_content %}
-<header class="play-heading"><div><span class="escape-kicker">{{ session.current_room.name }}</span><h1>{{ session.escape_room.name }}</h1></div><div class="timer-box"><span>TIEMPO RESTANTE</span><strong id="escape-timer" role="timer" aria-label="Tiempo restante" data-seconds="{{ remaining_seconds }}" data-refresh-url="{% url 'escape_arenas:play' session.pk %}">{{ remaining_seconds }} s</strong></div></header>
-<noscript><p class="notice">El reloj visual requiere JavaScript. Puedes jugar sin él: Django comprueba el tiempo en cada acción. Recarga para actualizarlo.</p></noscript>
-<div class="play-metrics"><span>Fase <b>{{ phase_number }} / {{ total }}</b></span><span>Superadas: <b>{{ completed }}</b></span><span>Puntos brutos: <b>{{ session.score }}</b></span></div>
-<progress class="phase-progress" max="{{ total }}" value="{{ completed }}" aria-label="Fases completadas">{{ percentage }}%</progress>
-<div class="detail-grid"><article class="mission-card puzzle-card"><span class="escape-tag">FASE {{ phase_number }} · {{ puzzle.points }} PUNTOS</span><h2>{{ stage.name }}</h2><p class="narrative">{{ stage.description }}</p><h3>{{ puzzle.title }}</h3><div class="statement">{{ puzzle.description|linebreaksbr }}</div>
-{% if puzzle.max_attempts %}<p>Máximo de intentos en esta prueba: {{ puzzle.max_attempts }}.</p>{% else %}<p class="muted">Intentos ilimitados en esta prueba.</p>{% endif %}
-<form method="post" action="{% url 'escape_arenas:submit' session.pk %}" class="answer-form">{% csrf_token %}<input type="hidden" name="puzzle_id" value="{{ puzzle.pk }}">
-{% if options %}<fieldset><legend>Elige tu respuesta</legend>{% for option in options %}<label class="choice"><input type="radio" name="answer" value="{{ option }}" required> {{ option }}</label>{% endfor %}</fieldset>{% else %}{{ form.as_p }}{% endif %}<button class="btn primary">Enviar respuesta →</button></form></article>
-<aside class="mission-card"><h2>Una ayuda a tiempo</h2><p>Desbloquea una pista cuando necesites otra perspectiva.</p>{% for usage in used_hints %}<div class="revealed-hint"><h3>Pista desbloqueada</h3><p>{{ usage.hint.text }}</p><small>−{{ usage.score_penalty }} puntos · −{{ usage.time_penalty }} segundos</small></div>{% endfor %}{% if hint %}<form method="post" action="{% url 'escape_arenas:hint' session.pk %}">{% csrf_token %}<input type="hidden" name="hint_id" value="{{ hint.pk }}"><p>Coste: {{ hint.penalty_points }} puntos y {{ hint.penalty_seconds }} segundos.</p><button class="btn secondary">Desbloquear pista</button></form>{% else %}<p class="muted">No hay más pistas disponibles ahora.</p>{% endif %}<p class="muted">Las penalizaciones de puntos se aplican al resultado final.</p></aside></div>
+{% extends 'escape_arenas/base.html' %} {% block escape_title %}En misión · {{
+session.escape_room.name }}{% endblock %} {% block escape_content %}
+<header class="play-heading">
+  <div>
+    <span class="escape-kicker">{{ session.current_room.name }}</span>
+    <h1>{{ session.escape_room.name }}</h1>
+  </div>
+  <div class="timer-box">
+    <span>TIEMPO RESTANTE</span
+    ><strong
+      id="escape-timer"
+      role="timer"
+      aria-label="Tiempo restante"
+      data-seconds="{{ remaining_seconds }}"
+      data-refresh-url="{% url 'escape_arenas:play' session.pk %}"
+      >{{ remaining_seconds }} s</strong
+    >
+  </div>
+</header>
+<noscript
+  ><p class="notice">
+    El reloj visual requiere JavaScript. Puedes jugar sin él: Django comprueba
+    el tiempo en cada acción. Recarga para actualizarlo.
+  </p></noscript
+>
+<div class="play-metrics">
+  <span>Fase <b>{{ phase_number }} / {{ total }}</b></span
+  ><span>Superadas: <b>{{ completed }}</b></span
+  ><span>Puntos brutos: <b>{{ session.score }}</b></span>
+</div>
+<progress
+  class="phase-progress"
+  max="{{ total }}"
+  value="{{ completed }}"
+  aria-label="Fases completadas"
+>
+  {{ percentage }}%
+</progress>
+<div class="detail-grid">
+  <article class="mission-card puzzle-card">
+    <span class="escape-tag"
+      >FASE {{ phase_number }} · {{ puzzle.points }} PUNTOS</span
+    >
+    <h2>{{ stage.name }}</h2>
+    <p class="narrative">{{ stage.description }}</p>
+    <h3>{{ puzzle.title }}</h3>
+    <div class="statement">{{ puzzle.description|linebreaksbr }}</div>
+    {% if puzzle.max_attempts %}
+    <p>Máximo de intentos en esta prueba: {{ puzzle.max_attempts }}.</p>
+    {% else %}
+    <p class="muted">Intentos ilimitados en esta prueba.</p>
+    {% endif %}
+    <form
+      method="post"
+      action="{% url 'escape_arenas:submit' session.pk %}"
+      class="answer-form"
+    >
+      {% csrf_token %}<input
+        type="hidden"
+        name="puzzle_id"
+        value="{{ puzzle.pk }}"
+      />
+      {% if options %}
+      <fieldset>
+        <legend>Elige tu respuesta</legend>
+        {% for option in options %}<label class="choice"
+          ><input type="radio" name="answer" value="{{ option }}" required /> {{
+          option }}</label
+        >{% endfor %}
+      </fieldset>
+      {% else %}{{ form.as_p }}{% endif %}<button class="btn primary">
+        Enviar respuesta →
+      </button>
+    </form>
+  </article>
+  <aside class="mission-card">
+    <h2>Una ayuda a tiempo</h2>
+    <p>Desbloquea una pista cuando necesites otra perspectiva.</p>
+    {% for usage in used_hints %}
+    <div class="revealed-hint">
+      <h3>Pista desbloqueada</h3>
+      <p>{{ usage.hint.text }}</p>
+      <small
+        >−{{ usage.score_penalty }} puntos · −{{ usage.time_penalty }}
+        segundos</small
+      >
+    </div>
+    {% endfor %}{% if hint %}
+    <form method="post" action="{% url 'escape_arenas:hint' session.pk %}">
+      {% csrf_token %}<input
+        type="hidden"
+        name="hint_id"
+        value="{{ hint.pk }}"
+      />
+      <p>
+        Coste: {{ hint.penalty_points }} puntos y {{ hint.penalty_seconds }}
+        segundos.
+      </p>
+      <button class="btn secondary">Desbloquear pista</button>
+    </form>
+    {% else %}
+    <p class="muted">No hay más pistas disponibles ahora.</p>
+    {% endif %}
+    <p class="muted">
+      Las penalizaciones de puntos se aplican al resultado final.
+    </p>
+  </aside>
+</div>
 {% endblock %}
