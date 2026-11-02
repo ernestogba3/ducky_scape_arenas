@@ -50,18 +50,57 @@ def start_session(*,user,escape_room):
     return s
 
 @transaction.atomic
-def settle_session(session,*,reason):
-    s=UserEscapeSession.objects.select_for_update().get(pk=session.pk)
-    if s.status not in {'COMPLETED','FAILED','ABANDONED'}:
+def settle_session(session, *, reason):
+    s = UserEscapeSession.objects.select_for_update().get(pk=session.pk)
+    if s.status not in {'COMPLETED', 'FAILED', 'ABANDONED'}:
         raise ValueError('La sesión todavía está activa.')
-    existing=EscapeSettlement.objects.filter(session=s).first()
-    if existing:return existing
-    gross=s.stage_progress.aggregate(v=Sum('gross_xp'))['v'] or 0
-    penalty=s.hint_usages.aggregate(v=Sum('score_penalty'))['v'] or 0
-    final=max(0,gross-penalty)
-    result=EscapeSettlement.objects.create(session=s,gross_xp=gross,penalty_xp=penalty,final_xp=final,
-        bonus_xp=10 if s.status=='COMPLETED' else 0,bonus_coins=0,reason=reason)
-    s.score=final;s.settled_at=timezone.now();s.save(update_fields=['score','settled_at','updated_at'])
+
+    # Idempotente: si ya existe liquidación, la devolvemos
+    existing = EscapeSettlement.objects.filter(session=s).first()
+    if existing:
+        return existing
+
+    # Puntos brutos: suma de puntos de puzzles resueltos
+    gross = s.stage_progress.aggregate(v=Sum('gross_xp'))['v'] or 0
+
+    # Penalización por pistas usadas
+    penalty = s.hint_usages.aggregate(v=Sum('score_penalty'))['v'] or 0
+
+    # ── Cálculo de bonus ────────────────────────────────────────
+    bonus_xp = 0
+    if s.status == 'COMPLETED':
+        # Bonus base por completar la aventura
+        bonus_xp += 10
+
+        # Bonus de velocidad: hasta +50 xp proporcional al tiempo restante
+        total_limit = s.rules_snapshot.get('time_limit_seconds', 0)
+        if total_limit and s.expires_at and s.finished_at and s.expires_at > s.finished_at:
+            time_left = (s.expires_at - s.finished_at).total_seconds()
+            speed_ratio = min(1.0, time_left / total_limit)
+            bonus_xp += int(speed_ratio * 50)
+
+        # Bonus de ejecución limpia: +25 si no fallaste ninguna respuesta
+        total_fails = s.puzzle_attempts.filter(is_correct=False).count()
+        if total_fails == 0:
+            bonus_xp += 25
+
+    # XP final neto = bruto − penalizaciones + bonus (nunca negativo)
+    final_total = max(0, gross - penalty + bonus_xp)
+
+    result = EscapeSettlement.objects.create(
+        session=s,
+        gross_xp=gross,
+        penalty_xp=penalty,
+        final_xp=final_total,
+        bonus_xp=bonus_xp,
+        bonus_coins=0,
+        reason=reason,
+    )
+
+    s.score = final_total
+    s.settled_at = timezone.now()
+    s.save(update_fields=['score', 'settled_at', 'updated_at'])
+
     return result
 
 def _expire(s):
@@ -120,11 +159,33 @@ def register_attempt(*,session,puzzle,answer,is_correct=None):
     session.refresh_from_db()
     return {'is_correct':correct,'completed':session.status=='COMPLETED','failed':session.status=='FAILED'}
 
-def get_available_hint(session,stage):
-    hint=(Hint.objects.filter(puzzle__stage=stage).order_by('order').first() or Hint.objects.filter(room=stage.room).order_by('order').first())
-    if hint is None or hint.coin_price or session.hint_usages.filter(hint=hint).exists():return None
-    start=session.stage_progress.get(stage=stage).started_at or session.started_at
-    if (timezone.now()-start).total_seconds()<hint.unlock_after_seconds:return None
+def get_available_hint(session, stage):
+    """Devuelve la siguiente pista disponible para la fase actual.
+    
+    MVP: ignora `coin_price` (sistema de monedas pendiente). Las
+    penalizaciones de tiempo y puntos sí se aplican al usarla.
+    """
+    used_ids = list(session.hint_usages.values_list('hint_id', flat=True))
+
+    # Primero intenta pistas de este puzzle; si no, pistas de la habitación
+    hint = (Hint.objects
+            .filter(puzzle__stage=stage)
+            .exclude(pk__in=used_ids)
+            .order_by('order')
+            .first()
+            or Hint.objects
+            .filter(room=stage.room)
+            .exclude(pk__in=used_ids)
+            .order_by('order')
+            .first())
+
+    if hint is None:
+        return None
+
+    start = session.stage_progress.get(stage=stage).started_at or session.started_at
+    if (timezone.now() - start).total_seconds() < hint.unlock_after_seconds:
+        return None
+
     return hint
 
 @transaction.atomic

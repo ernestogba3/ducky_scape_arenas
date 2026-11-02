@@ -46,7 +46,14 @@ session.escape_room.name }}{% endblock %} {% block escape_content %}
     <h3>{{ puzzle.title }}</h3>
     <div class="statement">{{ puzzle.description|linebreaksbr }}</div>
     {% if puzzle.max_attempts %}
-    <p>Máximo de intentos en esta prueba: {{ puzzle.max_attempts }}.</p>
+    <p>
+      Intentos: <b>{{ attempts_used }} / {{ puzzle.max_attempts }}</b>
+      {% if attempts_remaining <= 2 %}
+      <span style="color: #f87171">
+        · ¡Te quedan {{ attempts_remaining }}!</span
+      >
+      {% endif %}
+    </p>
     {% else %}
     <p class="muted">Intentos ilimitados en esta prueba.</p>
     {% endif %}
