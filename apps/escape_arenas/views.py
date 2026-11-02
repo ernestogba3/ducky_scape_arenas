@@ -111,6 +111,10 @@ def escape_play(request, pk):
         .select_related("hint")
     )
 
+    current_progress = session.stage_progress.get(stage=stage)
+    attempts_used = current_progress.attempts
+    attempts_remaining = (puzzle.max_attempts - attempts_used) if puzzle.max_attempts else None
+
     return render(request, "escape_arenas/play.html", {
         "session": session,
         "stage": stage,
@@ -124,6 +128,8 @@ def escape_play(request, pk):
         "completed": completed,
         "percentage": round(100 * completed / total) if total else 0,
         "phase_number": completed + 1,
+        "attempts_used": attempts_used,
+        "attempts_remaining": attempts_remaining,
     })
 
 @login_required
@@ -238,20 +244,54 @@ def escape_result(request, pk):
             UserEscapeSession.Status.ABANDONED: EscapeSettlement.Reason.ABANDONED,
         }
         settle_session(session, reason=reason_map[session.status])
-        # Refrescar la sesión para que el acceso a .settlement funcione
         session.refresh_from_db()
 
     settlement = getattr(session, "settlement", None)
+
+    # ── Estadísticas de la partida ──────────────────────────────
+    total_attempts = session.puzzle_attempts.count()
+    total_fails = session.puzzle_attempts.filter(is_correct=False).count()
+    hints_used = session.hint_usages.count()
+
+    total_stages = session.stage_progress.count()
+    completed_stages = session.stage_progress.filter(is_solved=True).count()
 
     total_time_seconds = 0
     if session.started_at and session.finished_at:
         total_time_seconds = int(
             (session.finished_at - session.started_at).total_seconds()
         )
-    hints_used = session.hint_usages.count()
+
+    # ── Desglose de bonus (recalculado solo para visualizarlo) ──
+    bonus_base = 0
+    bonus_speed = 0
+    bonus_clean = 0
+
+    if session.status == UserEscapeSession.Status.COMPLETED:
+        bonus_base = 10
+
+        total_limit = session.rules_snapshot.get('time_limit_seconds', 0)
+        if (total_limit and session.expires_at and session.finished_at
+                and session.expires_at > session.finished_at):
+            time_left = (session.expires_at - session.finished_at).total_seconds()
+            speed_ratio = min(1.0, time_left / total_limit)
+            bonus_speed = int(speed_ratio * 50)
+
+        if total_fails == 0:
+            bonus_clean = 25
+
     return render(request, "escape_arenas/result.html", {
         "session": session,
         "settlement": settlement,
+        "total": total_stages,
+        "completed": completed_stages,
+        "attempts": total_attempts,
+        "total_fails": total_fails,
+        "hints_used": hints_used,
+        "total_time_seconds": total_time_seconds,
+        "bonus_base": bonus_base,
+        "bonus_speed": bonus_speed,
+        "bonus_clean": bonus_clean,
     })
 
 
