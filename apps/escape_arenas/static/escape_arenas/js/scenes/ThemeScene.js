@@ -90,6 +90,18 @@ export default class ThemeScene extends Phaser.Scene {
     this.input.keyboard.on("keydown-RIGHT", () => this.changeSelection(+1));
     this.input.keyboard.on("keydown-ESC", () => this.scene.start("HubScene"));
     this.input.keyboard.on("keydown-ENTER", () => this.enterRoom());
+    this.add
+      .text(
+        10,
+        this.scale.height - 10,
+        "⚠ Arte provisional — pendiente de imágenes finales",
+        {
+          fontFamily: "monospace",
+          fontSize: "11px",
+          color: "#555",
+        },
+      )
+      .setOrigin(0, 1);
   }
 
   drawBackground() {

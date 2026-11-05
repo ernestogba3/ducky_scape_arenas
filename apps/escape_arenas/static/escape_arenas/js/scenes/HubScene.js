@@ -1,3 +1,4 @@
+import { Music } from "../sfx.js";
 export default class HubScene extends Phaser.Scene {
   constructor() {
     super("HubScene");
@@ -80,6 +81,19 @@ export default class HubScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.loadHub();
+    Music.start();
+    this.add
+      .text(
+        10,
+        this.scale.height - 10,
+        "⚠ Arte provisional — pendiente de imágenes finales",
+        {
+          fontFamily: "monospace",
+          fontSize: "11px",
+          color: "#555",
+        },
+      )
+      .setOrigin(0, 1);
   }
 
   createDuck(x, y) {

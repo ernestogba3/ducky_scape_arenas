@@ -112,6 +112,18 @@ export default class RoomScene extends Phaser.Scene {
       this.loadingText.setColor("#ff6b6b");
       console.error(err);
     }
+    this.add
+      .text(
+        10,
+        this.scale.height - 10,
+        "⚠ Arte provisional — pendiente de imágenes finales",
+        {
+          fontFamily: "monospace",
+          fontSize: "11px",
+          color: "#555",
+        },
+      )
+      .setOrigin(0, 1);
   }
 
   async loadState() {
@@ -575,6 +587,16 @@ export default class RoomScene extends Phaser.Scene {
         })
         .setOrigin(0.5);
     }
+    const coins = this.state.session.coins || 0;
+    this.add
+      .text(W / 2, 525, `🪙 ${coins} DuckyCoins`, {
+        fontFamily: "monospace",
+        fontSize: "24px",
+        color: "#ffd54f",
+        stroke: "#000",
+        strokeThickness: 3,
+      })
+      .setOrigin(0.5);
 
     const st = this.state.stats || {};
     this.add
@@ -631,6 +653,17 @@ export default class RoomScene extends Phaser.Scene {
         color: "#ddd",
       })
       .setOrigin(0.5);
+
+    const coins = this.state.session.coins || 0;
+    if (coins > 0) {
+      this.add
+        .text(W / 2, 365, `🪙 ${coins} DuckyCoins ganadas antes del fin`, {
+          fontFamily: "monospace",
+          fontSize: "20px",
+          color: "#ffd54f",
+        })
+        .setOrigin(0.5);
+    }
 
     const st = this.state.stats || {};
     this.add
