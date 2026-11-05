@@ -38,4 +38,5 @@ urlpatterns = [
     path("api/session/<uuid:pk>/state/",   views.api_session_state,  name="api_session_state"),
     path("api/session/<uuid:pk>/submit/",  views.api_session_submit, name="api_session_submit"),
     path("api/session/<uuid:pk>/hint/",    views.api_session_hint,   name="api_session_hint"),
+    path("api/session/<uuid:pk>/abandon/", views.api_session_abandon, name="api_session_abandon"),
 ]
