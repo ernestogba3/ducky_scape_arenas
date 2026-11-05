@@ -1,6 +1,7 @@
 import BootScene from "./scenes/BootScene.js";
 import HubScene from "./scenes/HubScene.js";
 import ThemeScene from "./scenes/ThemeScene.js";
+import RoomScene from "./scenes/RoomScene.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -17,7 +18,7 @@ const config = {
     default: "arcade",
     arcade: { debug: false },
   },
-  scene: [BootScene, HubScene, ThemeScene],
+  scene: [BootScene, HubScene, ThemeScene, RoomScene],
 };
 
 new Phaser.Game(config);

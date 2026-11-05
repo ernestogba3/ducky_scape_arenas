@@ -1,3 +1,4 @@
+import { apiPost } from "../api.js";
 export default class ThemeScene extends Phaser.Scene {
   constructor() {
     super("ThemeScene");
@@ -197,43 +198,53 @@ export default class ThemeScene extends Phaser.Scene {
     this.tweens.add({ targets: arrow, scale: 1.4, duration: 120, yoyo: true });
   }
 
-  enterRoom() {
+  async enterRoom() {
     const room = this.theme.rooms[this.selectedIndex];
-    console.log("Entrar en:", room);
     const W = this.scale.width;
     const H = this.scale.height;
 
-    // Flash amarillo
+    // Flash + mensaje de "Arrancando..."
     const flash = this.add.rectangle(W / 2, H / 2, W, H, 0xffd54f, 0);
     this.tweens.add({
       targets: flash,
       alpha: { from: 0, to: 0.6 },
       duration: 150,
       yoyo: true,
-      onComplete: () => {
-        flash.destroy();
-        // Mensaje temporal mientras no exista RoomScene
-        const bg = this.add
-          .rectangle(W / 2, H / 2, 640, 180, 0x000000, 0.9)
-          .setStrokeStyle(3, 0xffd54f);
-        const msg = this.add
-          .text(
-            W / 2,
-            H / 2,
-            `Arrancando «${room.name}»\n\n(RoomScene pendiente — Fase F del plan)`,
-            {
-              fontFamily: "monospace",
-              fontSize: "18px",
-              color: "#fff",
-              align: "center",
-            },
-          )
-          .setOrigin(0.5);
-        this.time.delayedCall(2200, () => {
-          bg.destroy();
-          msg.destroy();
-        });
-      },
     });
+
+    const loadingBg = this.add
+      .rectangle(W / 2, H / 2, 520, 120, 0x000000, 0.9)
+      .setStrokeStyle(3, 0xffd54f);
+    const loadingTxt = this.add
+      .text(W / 2, H / 2, "Arrancando aventura...", {
+        fontFamily: "monospace",
+        fontSize: "20px",
+        color: "#fff",
+      })
+      .setOrigin(0.5);
+
+    try {
+      const res = await apiPost("/escape/api/session/start/", {
+        escape_room_id: room.id,
+      });
+      if (!res.ok) throw new Error(res.error || "Error desconocido");
+
+      loadingBg.destroy();
+      loadingTxt.destroy();
+
+      this.scene.start("RoomScene", {
+        sessionId: res.session_id,
+        resumed: res.resumed,
+        escapeRoom: room,
+      });
+    } catch (err) {
+      console.error(err);
+      loadingTxt.setText("Error: " + err.message);
+      loadingTxt.setColor("#ff6b6b");
+      this.time.delayedCall(2500, () => {
+        loadingBg.destroy();
+        loadingTxt.destroy();
+      });
+    }
   }
 }
