@@ -26,6 +26,7 @@ export default class RoomScene extends Phaser.Scene {
     this.sessionId = data.sessionId;
     this.escapeRoom = data.escapeRoom;
     this.resumed = !!data.resumed;
+    this.oldCoins = data.oldCoins;
     this.state = null;
     this.modalApi = null;
     this.expireChecked = false;
@@ -95,6 +96,16 @@ export default class RoomScene extends Phaser.Scene {
       this.renderStageInfo();
       if (this.resumed) {
         this.showToast("📋 Partida reanudada", "#64b5f6");
+      }
+      // Monedas recién ganadas al cerrar una habitación
+      if (typeof this.oldCoins === "number") {
+        const diff = (this.state.session.coins || 0) - this.oldCoins;
+        if (diff > 0) {
+          this.showToast(
+            `🪙 +${diff} monedas por completar la habitación`,
+            "#ffd54f",
+          );
+        }
       }
     } catch (err) {
       this.loadingText.setText("Error: " + err.message);
@@ -175,11 +186,16 @@ export default class RoomScene extends Phaser.Scene {
       })
       .setOrigin(1, 0);
     this.add
-      .text(W - 20, 42, `Score: ${s.session.score}`, {
-        fontFamily: "monospace",
-        fontSize: "13px",
-        color: "#bbb",
-      })
+      .text(
+        W - 20,
+        42,
+        `🪙 ${s.session.coins || 0}  ·  Score: ${s.session.score}`,
+        {
+          fontFamily: "monospace",
+          fontSize: "13px",
+          color: "#ffd54f",
+        },
+      )
       .setOrigin(1, 0);
 
     // Botón "Abandonar" en la esquina superior derecha, destacado, con depth alto
@@ -339,10 +355,14 @@ export default class RoomScene extends Phaser.Scene {
   }
 
   closeModal() {
-    if (this.modalApi) {
+    if (this.modalApi && typeof this.modalApi.close === "function") {
       this.modalApi.close();
-      this.modalApi = null;
+    } else {
+      // Fallback defensivo: elimina el overlay si quedara huérfano en el DOM
+      const el = document.getElementById("puzzle-modal");
+      if (el) el.remove();
     }
+    this.modalApi = null;
     this.input.keyboard.enabled = true;
   }
 
@@ -376,11 +396,13 @@ export default class RoomScene extends Phaser.Scene {
       if (res.is_correct) {
         SFX.correct();
         api.showFeedback("✓ ¡Correcto!", "#4caf50");
+        const oldCoins = this.state.session.coins || 0;
         this.time.delayedCall(1200, () => {
           this.closeModal();
           this.scene.restart({
             sessionId: this.sessionId,
             escapeRoom: this.escapeRoom,
+            oldCoins: oldCoins,
           });
         });
       } else {
@@ -413,17 +435,21 @@ export default class RoomScene extends Phaser.Scene {
         {},
       );
       if (!res.ok) {
-        SFX.hint();
         api.showFeedback(
           "⚠ " + (res.error || "No hay pista disponible"),
           "#ff9800",
         );
         return;
       }
+      SFX.hint();
       const h = res.hint;
       api.appendHintText(
         `${h.text}<br><span style="color:#888;font-size:12px">(−${h.penalty_seconds}s · −${h.penalty_points} pts)</span>`,
       );
+      // Refresca estado para saber si queda alguna pista más y
+      // reactivar el botón del modal si corresponde.
+      await this.loadState();
+      api.setHint(this.state.hint);
     } catch (err) {
       console.error(err);
       api.showFeedback("Error de red: " + err.message, "#ff6b6b");

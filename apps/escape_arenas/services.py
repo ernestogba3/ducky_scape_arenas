@@ -119,9 +119,14 @@ def _advance(s,stage):
     now=timezone.now()
     next_stage=stage.room.stages.filter(order__gt=stage.order).order_by('order').first()
     if next_stage is None:
-        s.room_progress.filter(room=stage.room).update(status='COMPLETED',completed_at=now,final_fragment_acquired=stage.room.final_fragment)
-        next_room=s.escape_room.rooms.filter(order__gt=stage.room.order).order_by('order').first()
-        if next_room:
+        s.room_progress.filter(room=stage.room).update(
+        status='COMPLETED',
+        completed_at=now,
+        final_fragment_acquired=stage.room.final_fragment,
+        coins_awarded=50,  # MVP: 50 DuckyCoins por habitación completada
+        )
+    next_room=s.escape_room.rooms.filter(order__gt=stage.room.order).order_by('order').first()
+    if next_room:
             next_stage=next_room.stages.order_by('order').first()
             s.room_progress.filter(room=next_room).update(status='AVAILABLE',started_at=now)
     if next_stage:

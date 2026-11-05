@@ -3,7 +3,8 @@
 // para que RoomScene actualice el modal según respuestas del backend.
 
 export function openPuzzleModal(state, handlers) {
-  const { puzzle, hint } = state;
+  const { puzzle } = state;
+  let hint = state.hint; // mutable: la escena puede sustituirlo con api.setHint()
   const { onSubmit, onHintRequest, onCancel } = handlers;
 
   // Limpia modal previo si quedara
@@ -204,9 +205,23 @@ export function openPuzzleModal(state, handlers) {
         border-left: 4px solid #64b5f6; color: #cde; font-size: 14px;
         line-height: 1.5;`;
       hintBox.appendChild(h);
-      hintBtn.disabled = true;
-      hintBtn.style.opacity = "0.5";
-      hintBtn.textContent = "Pista usada";
+      // La escena decide luego con setHint() si queda otra pista.
+    },
+    setHint(newHint) {
+      hint = newHint;
+      if (newHint) {
+        hintBtn.disabled = false;
+        hintBtn.textContent = "💡 Pista";
+        hintBtn.style.opacity = "1";
+        hintBtn.style.cursor = "pointer";
+        hintBtn.style.backgroundColor = "#64b5f6";
+      } else {
+        hintBtn.disabled = true;
+        hintBtn.textContent = "Sin más pistas";
+        hintBtn.style.opacity = "0.6";
+        hintBtn.style.cursor = "not-allowed";
+        hintBtn.style.backgroundColor = "#555";
+      }
     },
     close() {
       document.removeEventListener("keydown", onKey);

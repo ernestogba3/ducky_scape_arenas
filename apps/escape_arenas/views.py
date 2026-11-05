@@ -662,6 +662,7 @@ def api_session_state(request, pk):
                 "id": str(session.pk),
                 "status": session.status,
                 "score": session.score,
+                "coins": session.room_progress.aggregate(total=Sum("coins_awarded"))["total"] or 0,
                 "escape_room": {
                     "id": er.id, "name": er.name, "slug": er.slug,
                     "theme": er.theme, "era": er.era,
@@ -699,6 +700,7 @@ def api_session_state(request, pk):
             "status": session.status,
             "remaining_seconds": get_remaining_seconds(session),
             "score": session.score,
+            "coins": session.room_progress.aggregate(total=Sum("coins_awarded"))["total"] or 0,
             "escape_room": {
                 "id": er.id, "name": er.name, "slug": er.slug,
                 "theme": er.theme, "era": er.era,
