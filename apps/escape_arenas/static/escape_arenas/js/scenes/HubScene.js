@@ -97,29 +97,15 @@ export default class HubScene extends Phaser.Scene {
   }
 
   createDuck(x, y) {
-    const duck = this.add.container(x, y);
-    // Sombra bajo el pato
-    const shadow = this.add.ellipse(0, 28, 50, 10, 0x000000, 0.35);
-    // Patas
-    const legL = this.add.ellipse(-8, 22, 6, 12, 0xff8f00);
-    const legR = this.add.ellipse(8, 22, 6, 12, 0xff8f00);
-    // Cuerpo
-    const body = this.add.ellipse(0, 4, 50, 36, 0xffeb3b);
-    // Ala
-    const wing = this.add.ellipse(-6, 4, 24, 18, 0xffd54f);
-    // Cabeza
-    const head = this.add.circle(8, -18, 16, 0xffeb3b);
-    // Pico
-    const beak = this.add.triangle(26, -16, 0, 0, 16, 4, 0, 8, 0xff8f00);
-    // Ojo
-    const eye = this.add.circle(12, -22, 2.5, 0x000000);
-
-    duck.add([shadow, legL, legR, body, wing, head, beak, eye]);
-
-    this.physics.add.existing(duck);
-    duck.body.setSize(50, 56);
-    duck.body.setOffset(-25, -28);
-    duck.body.setCollideWorldBounds(true);
+    const duck = this.physics.add.sprite(x, y, "duck-down");
+    duck.setCollideWorldBounds(true);
+    // Si tu sprite es muy pequeño/grande, ajusta estos dos valores.
+    // Mantén un ratio cuadrado o respeta el aspecto original del sprite.
+    duck.setDisplaySize(64, 64);
+    // Hitbox más pequeño que el sprite para que colisione más natural.
+    duck.body.setSize(40, 40);
+    duck.body.setOffset((duck.width - 40) / 2, (duck.height - 40) / 2);
+    duck.currentDir = "down";
     return duck;
   }
 
@@ -273,10 +259,29 @@ export default class HubScene extends Phaser.Scene {
     const speed = 240;
     const body = this.player.body;
     body.setVelocity(0);
-    if (this.cursors.left.isDown) body.setVelocityX(-speed);
-    if (this.cursors.right.isDown) body.setVelocityX(speed);
-    if (this.cursors.up.isDown) body.setVelocityY(-speed);
-    if (this.cursors.down.isDown) body.setVelocityY(speed);
+
+    let nextDir = this.player.currentDir;
+    if (this.cursors.left.isDown) {
+      body.setVelocityX(-speed);
+      nextDir = "left";
+    }
+    if (this.cursors.right.isDown) {
+      body.setVelocityX(speed);
+      nextDir = "right";
+    }
+    if (this.cursors.up.isDown) {
+      body.setVelocityY(-speed);
+      nextDir = "up";
+    }
+    if (this.cursors.down.isDown) {
+      body.setVelocityY(speed);
+      nextDir = "down";
+    }
+
+    if (nextDir !== this.player.currentDir) {
+      this.player.setTexture("duck-" + nextDir);
+      this.player.currentDir = nextDir;
+    }
 
     let active = null;
     for (const portal of this.portals) {
