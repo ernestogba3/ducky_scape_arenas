@@ -10,6 +10,8 @@ from .models import (
     EscapeRoom, Room, Stage, Puzzle, Hint,
     UserEscapeSession, EscapeSettlement,
 )
+from django.http import JsonResponse
+
 from .services import (
     check_stage_answer,
     expire_session_if_needed,
@@ -530,3 +532,35 @@ from django.shortcuts import render
 def game_view(request):
     """Spike inicial de Phaser — carga el canvas vacío con BootScene + HubScene."""
     return render(request, "escape_arenas/game.html")
+
+@login_required
+def hub_data_view(request):
+    """Devuelve los escape rooms activos agrupados por tema para la HubScene de Phaser."""
+    # Partimos de las tres temáticas conocidas aunque no tengan rooms todavía,
+    # para que el hub pinte siempre los tres portales (los vacíos saldrán apagados).
+    rooms_by_theme = {
+        key: {"key": key, "label": label, "rooms": []}
+        for key, label in EscapeRoom.Theme.choices
+    }
+
+    qs = (
+        EscapeRoom.objects
+        .filter(is_active=True)
+        .order_by("theme", "era", "name")
+    )
+    for er in qs:
+        rooms_by_theme[er.theme]["rooms"].append({
+            "id": er.id,
+            "slug": er.slug,
+            "name": er.name,
+            "description": er.description,
+            "era": er.era,
+            "era_display": er.get_era_display(),
+            "difficulty": er.difficulty,
+            "difficulty_display": er.get_difficulty_display(),
+            "estimated_duration": er.estimated_duration,
+        })
+
+    return JsonResponse({
+        "themes": list(rooms_by_theme.values()),
+    })

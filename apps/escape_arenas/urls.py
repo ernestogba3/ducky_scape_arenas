@@ -32,4 +32,5 @@ urlpatterns = [
 
     # Spike inicial de Phaser
     path("game/", views.game_view, name="game"),
+    path("api/hub/", views.hub_data_view, name="hub_data"),
 ]
