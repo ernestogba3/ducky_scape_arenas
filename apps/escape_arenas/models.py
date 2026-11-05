@@ -46,6 +46,14 @@ class EscapeRoom(models.Model):
         LAB = "LAB", "Laboratorio"
         # Ampliable: HOSPITAL, TEMPLE, MANSION, SHIP, FOREST...
     
+    class Era(models.IntegerChoices):
+        PREHISTORIC = 1, "Prehistórico"
+        GREEK = 2, "Griego"
+        ROMAN = 3, "Romano"
+        MEDIEVAL = 4, "Medieval"
+        RENAISSANCE = 5, "Renacentista"
+        INDUSTRIAL = 6, "Revolución Industrial"
+        TWENTIETH = 7, "Siglo XX"
     
 
     name = models.CharField(max_length=150)
@@ -61,6 +69,11 @@ class EscapeRoom(models.Model):
             choices=Theme.choices,
             default=Theme.PRISON,
             help_text="Temática del escape room (contenedor narrativo del hub).",
+    )
+    era = models.PositiveSmallIntegerField(
+        choices=Era.choices,
+        default=Era.PREHISTORIC,
+        help_text="Era histórica del escape room. Actúa como nivel de dificultad (1 fácil → 7 difícil).",
     )
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
