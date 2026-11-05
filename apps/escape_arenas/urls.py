@@ -29,4 +29,7 @@ urlpatterns = [
 
     # Historial
     path("history/", views.escape_history, name="history"),
+
+    # Spike inicial de Phaser
+    path("game/", views.game_view, name="game"),
 ]

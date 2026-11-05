@@ -521,3 +521,12 @@ def child_delete(request, child_type, pk):
         "label": label,
         "escape_room": escape_room,
     })
+
+    from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+
+@login_required
+def game_view(request):
+    """Spike inicial de Phaser — carga el canvas vacío con BootScene + HubScene."""
+    return render(request, "escape_arenas/game.html")
