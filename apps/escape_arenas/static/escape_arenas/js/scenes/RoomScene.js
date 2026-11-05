@@ -1,5 +1,6 @@
 import { apiGet, apiPost } from "../api.js";
 import { openPuzzleModal } from "../ui/puzzle-modal.js";
+import { SFX } from "../sfx.js";
 
 const ERA_COLORS = {
   1: { top: 0x3a2f20, bottom: 0x1a1308 },
@@ -9,6 +10,11 @@ const ERA_COLORS = {
   5: { top: 0x3f2c5f, bottom: 0x1f1430 },
   6: { top: 0x2b2420, bottom: 0x140e0a },
   7: { top: 0x1a2b3f, bottom: 0x0a1420 },
+};
+const THEME_OBJECTS = {
+  PRISON: { emoji: "🔑", bg: 0x8b4a4a, label: "la llave" },
+  SCHOOL: { emoji: "📜", bg: 0x4a6b3a, label: "el pergamino" },
+  LAB: { emoji: "⚗️", bg: 0x3a5478, label: "el matraz" },
 };
 
 export default class RoomScene extends Phaser.Scene {
@@ -266,11 +272,17 @@ export default class RoomScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    // Objeto interactuable con glow pulsante
+    // Objeto interactuable con glow pulsante (variación por tema)
+    const theme = s.session.escape_room.theme;
+    const obj = THEME_OBJECTS[theme] || {
+      emoji: "📜",
+      bg: 0x8b6f47,
+      label: "el objeto",
+    };
     const objX = W / 2;
     const objY = 450;
     this.interactObj = this.add
-      .rectangle(objX, objY, 140, 140, 0x8b6f47)
+      .rectangle(objX, objY, 140, 140, obj.bg)
       .setStrokeStyle(4, 0xffd54f)
       .setInteractive({ useHandCursor: true });
     this.tweens.add({
@@ -281,7 +293,12 @@ export default class RoomScene extends Phaser.Scene {
       repeat: -1,
       ease: "Sine.easeInOut",
     });
-    this.add.text(objX, objY, "📜", { fontSize: "64px" }).setOrigin(0.5);
+    this.add
+      .text(objX, objY, obj.emoji, {
+        fontSize: "64px",
+        padding: { x: 4, y: 16 },
+      })
+      .setOrigin(0.5);
 
     this.interactObj.on("pointerover", () =>
       this.interactObj.setStrokeStyle(5, 0xffffff),
@@ -292,13 +309,12 @@ export default class RoomScene extends Phaser.Scene {
     this.interactObj.on("pointerdown", () => this.openPuzzle());
 
     this.add
-      .text(W / 2, 540, "Haz click en el objeto para resolver la prueba", {
+      .text(W / 2, 540, `Haz click en ${obj.label} para resolver la prueba`, {
         fontFamily: "monospace",
         fontSize: "14px",
         color: "#aaa",
       })
       .setOrigin(0.5);
-
     this.add
       .text(W / 2, H - 30, "ESC vuelve al hub (la partida queda en curso)", {
         fontFamily: "monospace",
@@ -307,12 +323,12 @@ export default class RoomScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
   }
-
   // ─── Modal del puzzle ─────────────────────────────────────────
 
   openPuzzle() {
     if (this.modalApi) return;
     if (this.state.finished) return;
+    SFX.open();
     this.input.keyboard.enabled = false;
 
     this.modalApi = openPuzzleModal(this.state, {
@@ -358,6 +374,7 @@ export default class RoomScene extends Phaser.Scene {
       }
 
       if (res.is_correct) {
+        SFX.correct();
         api.showFeedback("✓ ¡Correcto!", "#4caf50");
         this.time.delayedCall(1200, () => {
           this.closeModal();
@@ -367,6 +384,7 @@ export default class RoomScene extends Phaser.Scene {
           });
         });
       } else {
+        SFX.wrong();
         api.shake();
         api.showFeedback("✗ Incorrecto. Intenta de nuevo.", "#ff6b6b");
         if (res.failed) {
@@ -395,6 +413,7 @@ export default class RoomScene extends Phaser.Scene {
         {},
       );
       if (!res.ok) {
+        SFX.hint();
         api.showFeedback(
           "⚠ " + (res.error || "No hay pista disponible"),
           "#ff9800",
@@ -475,6 +494,7 @@ export default class RoomScene extends Phaser.Scene {
   // ─── Pantallas finales ────────────────────────────────────────
 
   showVictory() {
+    SFX.victory();
     const W = this.scale.width;
     const H = this.scale.height;
 
@@ -554,6 +574,7 @@ export default class RoomScene extends Phaser.Scene {
   }
 
   showDefeat() {
+    SFX.defeat();
     const W = this.scale.width;
     const H = this.scale.height;
 
