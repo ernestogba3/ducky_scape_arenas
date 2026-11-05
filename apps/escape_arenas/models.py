@@ -38,6 +38,16 @@ class EscapeRoom(models.Model):
         MEDIUM = "MEDIUM", "Media"
         HARD = "HARD", "Difícil"
 
+    
+
+    class Theme(models.TextChoices):
+        PRISON = "PRISON", "Cárcel"
+        SCHOOL = "SCHOOL", "Colegio"
+        LAB = "LAB", "Laboratorio"
+        # Ampliable: HOSPITAL, TEMPLE, MANSION, SHIP, FOREST...
+    
+    
+
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=160, unique=True)
     description = models.TextField()
@@ -45,6 +55,12 @@ class EscapeRoom(models.Model):
         max_length=12,
         choices=Difficulty.choices,
         default=Difficulty.MEDIUM,
+    )
+    theme = models.CharField(
+            max_length=20,
+            choices=Theme.choices,
+            default=Theme.PRISON,
+            help_text="Temática del escape room (contenedor narrativo del hub).",
     )
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
