@@ -203,7 +203,6 @@ export default class ThemeScene extends Phaser.Scene {
     const W = this.scale.width;
     const H = this.scale.height;
 
-    // Flash + mensaje de "Arrancando..."
     const flash = this.add.rectangle(W / 2, H / 2, W, H, 0xffd54f, 0);
     this.tweens.add({
       targets: flash,
@@ -229,19 +228,26 @@ export default class ThemeScene extends Phaser.Scene {
       });
       if (!res.ok) throw new Error(res.error || "Error desconocido");
 
+      // Si es una reanudación, avisamos al usuario
+      if (res.resumed) {
+        loadingTxt.setText("Reanudando partida anterior...");
+        loadingTxt.setColor("#64b5f6");
+        await new Promise((r) => setTimeout(r, 700));
+      }
+
       loadingBg.destroy();
       loadingTxt.destroy();
 
       this.scene.start("RoomScene", {
         sessionId: res.session_id,
         resumed: res.resumed,
-        escapeRoom: room,
+        escapeRoom: res.escape_room || room,
       });
     } catch (err) {
       console.error(err);
       loadingTxt.setText("Error: " + err.message);
       loadingTxt.setColor("#ff6b6b");
-      this.time.delayedCall(2500, () => {
+      this.time.delayedCall(3000, () => {
         loadingBg.destroy();
         loadingTxt.destroy();
       });
