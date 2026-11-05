@@ -176,21 +176,30 @@ export default class RoomScene extends Phaser.Scene {
       })
       .setOrigin(1, 0);
 
-    // Botón "Abandonar" pequeño abajo a la izquierda del HUD
+    // Botón "Abandonar" en la esquina superior derecha, destacado, con depth alto
     this.abandonBtn = this.add
-      .text(20, 68, "✕ Abandonar aventura", {
+      .text(W - 20, 72, " ✕ Abandonar ", {
         fontFamily: "monospace",
-        fontSize: "12px",
-        color: "#ff8787",
-        stroke: "#000",
-        strokeThickness: 2,
+        fontSize: "14px",
+        color: "#fff",
+        backgroundColor: "#8b2a2a",
+        padding: { x: 10, y: 6 },
       })
-      .setInteractive({ useHandCursor: true });
+      .setOrigin(1, 0)
+      .setInteractive({ useHandCursor: true })
+      .setDepth(100);
+
     this.abandonBtn.on("pointerover", () =>
-      this.abandonBtn.setColor("#ffb0b0"),
+      this.abandonBtn.setBackgroundColor("#c53535"),
     );
-    this.abandonBtn.on("pointerout", () => this.abandonBtn.setColor("#ff8787"));
-    this.abandonBtn.on("pointerdown", () => this.confirmAbandon());
+    this.abandonBtn.on("pointerout", () =>
+      this.abandonBtn.setBackgroundColor("#8b2a2a"),
+    );
+    this.abandonBtn.on("pointerdown", (pointer, localX, localY, event) => {
+      // Importante: evitar que el click llegue al pergamino u otros objetos
+      if (event && event.stopPropagation) event.stopPropagation();
+      this.confirmAbandon();
+    });
 
     // Timer que decrementa cada segundo + auto-chequeo al expirar
     this.timerEvent = this.time.addEvent({
@@ -406,71 +415,34 @@ export default class RoomScene extends Phaser.Scene {
 
   confirmAbandon() {
     if (this.modalApi) return;
-    this.input.keyboard.enabled = false;
 
-    const overlay = document.createElement("div");
-    overlay.id = "abandon-modal";
-    overlay.style.cssText = `
-      position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1000; font-family: monospace;`;
+    // Confirmación nativa del navegador — robusta, no choca con nada
+    const ok = window.confirm(
+      "¿Abandonar la aventura?\n\n" +
+        "Perderás el progreso de esta partida. " +
+        "Quedará marcada como ABANDONADA.",
+    );
+    if (!ok) return;
 
-    const panel = document.createElement("div");
-    panel.style.cssText = `
-      background: #2a2a44; border: 4px solid #ff6b6b; border-radius: 8px;
-      padding: 28px 32px; max-width: 480px; color: #fff; text-align: center;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);`;
-    panel.innerHTML = `
-      <h2 style="margin:0 0 12px; color:#ff6b6b; font-size:22px;">¿Abandonar la aventura?</h2>
-      <p style="margin:0 0 24px; font-size:14px; color:#ddd; line-height:1.5;">
-        Perderás el progreso de esta partida.<br>La aventura quedará marcada como abandonada.
-      </p>
-      <div style="display:flex; gap:12px; justify-content:center;">
-        <button id="abandon-no" style="padding:10px 20px; font-size:14px; font-family:monospace;
-          background:#555; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Cancelar</button>
-        <button id="abandon-yes" style="padding:10px 20px; font-size:14px; font-family:monospace;
-          background:#ff6b6b; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Sí, abandonar</button>
-      </div>`;
-    overlay.appendChild(panel);
-    document.body.appendChild(overlay);
+    this.doAbandon();
+  }
 
-    const cleanup = () => {
-      overlay.remove();
-      this.input.keyboard.enabled = true;
-    };
-
-    const onKey = (e) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        cleanup();
-        document.removeEventListener("keydown", onKey);
-      }
-    };
-    document.addEventListener("keydown", onKey);
-
-    document.getElementById("abandon-no").onclick = () => {
-      cleanup();
-      document.removeEventListener("keydown", onKey);
-    };
-    document.getElementById("abandon-yes").onclick = async () => {
-      cleanup();
-      document.removeEventListener("keydown", onKey);
-      try {
-        const res = await apiPost(
-          `/escape/api/session/${this.sessionId}/abandon/`,
-          {},
-        );
-        if (!res.ok) throw new Error(res.error || "No se pudo abandonar");
-        await this.loadState();
-        this.scene.restart({
-          sessionId: this.sessionId,
-          escapeRoom: this.escapeRoom,
-        });
-      } catch (err) {
-        console.error(err);
-        this.showToast("Error al abandonar: " + err.message, "#ff6b6b");
-      }
-    };
+  async doAbandon() {
+    try {
+      const res = await apiPost(
+        `/escape/api/session/${this.sessionId}/abandon/`,
+        {},
+      );
+      if (!res.ok) throw new Error(res.error || "No se pudo abandonar");
+      this.closeModal();
+      this.scene.restart({
+        sessionId: this.sessionId,
+        escapeRoom: this.escapeRoom,
+      });
+    } catch (err) {
+      console.error(err);
+      this.showToast("Error al abandonar: " + err.message, "#ff6b6b");
+    }
   }
 
   // ─── Toast ────────────────────────────────────────────────────
