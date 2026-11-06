@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>DuckyEscape — Spike</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #111;
+        height: 100%;
+      }
+      #game {
+        display: block;
+        margin: 0 auto;
+      }
+      #ui-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div id="ui-overlay"></div>
+
+    <script>
+      window.DUCKY = {
+        csrf: "{{ csrf_token }}",
+        staticBase: "{% static 'escape_arenas/' %}",
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+    <script
+      type="module"
+      src="{% static 'escape_arenas/js/main.js' %}"
+    ></script>
+  </body>
+</html>

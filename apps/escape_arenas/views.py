@@ -6,10 +6,13 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from .forms import EscapeSubmitForm
 from .forms import EscapeRoomForm, RoomForm, StageForm, PuzzleForm, HintForm
+from django.utils import timezone
 from .models import (
     EscapeRoom, Room, Stage, Puzzle, Hint,
     UserEscapeSession, EscapeSettlement,
 )
+from django.http import JsonResponse
+
 from .services import (
     check_stage_answer,
     expire_session_if_needed,
@@ -521,3 +524,335 @@ def child_delete(request, child_type, pk):
         "label": label,
         "escape_room": escape_room,
     })
+
+
+@login_required
+def game_view(request):
+    """Spike inicial de Phaser — carga el canvas vacío con BootScene + HubScene."""
+    return render(request, "escape_arenas/game.html")
+
+@login_required
+def hub_data_view(request):
+    """Devuelve los escape rooms activos agrupados por tema para la HubScene de Phaser."""
+    # Partimos de las tres temáticas conocidas aunque no tengan rooms todavía,
+    # para que el hub pinte siempre los tres portales (los vacíos saldrán apagados).
+    rooms_by_theme = {
+        key: {"key": key, "label": label, "rooms": []}
+        for key, label in EscapeRoom.Theme.choices
+    }
+
+    qs = (
+        EscapeRoom.objects
+        .filter(is_active=True)
+        .order_by("theme", "era", "name")
+    )
+    for er in qs:
+        rooms_by_theme[er.theme]["rooms"].append({
+            "id": er.id,
+            "slug": er.slug,
+            "name": er.name,
+            "description": er.description,
+            "era": er.era,
+            "era_display": er.get_era_display(),
+            "difficulty": er.difficulty,
+            "difficulty_display": er.get_difficulty_display(),
+            "estimated_duration": er.estimated_duration,
+        })
+
+    return JsonResponse({
+        "themes": list(rooms_by_theme.values()),
+    })
+
+import json
+from django.views.decorators.http import require_POST
+
+
+# ──────────────────────────────────────────────────────────────
+# API JSON para el frontend Phaser
+#
+# Todos los endpoints requieren login de Django (cookie de sesión)
+# y respetan los mismos invariantes que las vistas HTML clásicas:
+# delegan en services.py, nunca duplican lógica de juego.
+#
+# Respuestas uniformes:
+#   {"ok": true,  ...}              → éxito
+#   {"ok": false, "error": "..."}  → error controlado (HTTP 400/404/409)
+#
+# Los POST exigen header X-CSRFToken con el valor de csrf_token
+# del template que carga el canvas.
+# ──────────────────────────────────────────────────────────────
+
+MAX_ANSWER_LENGTH = 1000
+
+
+@login_required
+@require_POST
+def api_session_start(request):
+    """Arranca una partida en el escape room indicado, o reanuda la activa del usuario.
+
+    Body JSON: {"escape_room_id": <int>}
+
+    Devuelve:
+        {"ok": true, "session_id": "<uuid>", "resumed": <bool>,
+         "escape_room": {id, name, slug, theme, era, era_display}}
+    """
+    try:
+        data = json.loads(request.body or b"{}")
+    except ValueError:
+        return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
+
+    escape_room_id = data.get("escape_room_id")
+    if not escape_room_id:
+        return JsonResponse({"ok": False, "error": "escape_room_id requerido"}, status=400)
+
+    room = get_object_or_404(EscapeRoom, pk=escape_room_id, is_active=True)
+
+    def _room_payload(r):
+        return {
+            "id": r.id, "name": r.name, "slug": r.slug,
+            "theme": r.theme, "era": r.era,
+            "era_display": r.get_era_display(),
+        }
+
+    # Reanudar si ya hay una sesión activa en este escape room
+    active = request.user.escape_sessions.filter(
+        escape_room=room, status=UserEscapeSession.Status.PLAYING
+    ).first()
+    if active:
+        expire_session_if_needed(active)
+        if active.status == UserEscapeSession.Status.PLAYING:
+            return JsonResponse({
+                "ok": True,
+                "session_id": str(active.pk),
+                "resumed": True,
+                "escape_room": _room_payload(room),
+            })
+
+    try:
+        session = start_session(user=request.user, escape_room=room)
+    except ValueError as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=400)
+
+    return JsonResponse({
+        "ok": True,
+        "session_id": str(session.pk),
+        "resumed": False,
+        "escape_room": _room_payload(room),
+    })
+
+
+@login_required
+def api_session_state(request, pk):
+    """Devuelve el estado completo de la sesión para que el frontend lo pinte.
+
+    Mientras PLAYING: session, room, stage, puzzle, hint, progress.
+    Si la sesión terminó: session, settlement, stats y finished=true.
+    """
+    session = owned(request, pk)
+    expire_session_if_needed(session)
+
+    er = session.escape_room
+
+    if session.status != UserEscapeSession.Status.PLAYING:
+        settlement = getattr(session, "settlement", None)
+        return JsonResponse({
+            "ok": True,
+            "finished": True,
+            "session": {
+                "id": str(session.pk),
+                "status": session.status,
+                "score": session.score,
+                "coins": session.room_progress.aggregate(total=Sum("coins_awarded"))["total"] or 0,
+                "escape_room": {
+                    "id": er.id, "name": er.name, "slug": er.slug,
+                    "theme": er.theme, "era": er.era,
+                    "era_display": er.get_era_display(),
+                },
+            },
+            "settlement": None if settlement is None else {
+                "final_xp": settlement.final_xp,
+                "gross_xp": settlement.gross_xp,
+                "penalty_xp": settlement.penalty_xp,
+                "bonus_xp": settlement.bonus_xp,
+                "reason": settlement.reason,
+            },
+            "stats": {
+                "attempts": session.puzzle_attempts.count(),
+                "fails": session.puzzle_attempts.filter(is_correct=False).count(),
+                "hints_used": session.hint_usages.count(),
+            },
+        })
+
+    stage = session.current_stage
+    room = session.current_room
+    puzzle = stage.puzzles.order_by("order").first()
+    progress = session.stage_progress.get(stage=stage)
+    hint = get_available_hint(session, stage)
+
+    total = session.stage_progress.count()
+    completed = session.stage_progress.filter(is_solved=True).count()
+
+    return JsonResponse({
+        "ok": True,
+        "finished": False,
+        "session": {
+            "id": str(session.pk),
+            "status": session.status,
+            "remaining_seconds": get_remaining_seconds(session),
+            "score": session.score,
+            "coins": session.room_progress.aggregate(total=Sum("coins_awarded"))["total"] or 0,
+            "escape_room": {
+                "id": er.id, "name": er.name, "slug": er.slug,
+                "theme": er.theme, "era": er.era,
+                "era_display": er.get_era_display(),
+            },
+        },
+        "room": {
+            "id": room.id, "name": room.name,
+            "description": room.description, "order": room.order,
+        },
+        "stage": {
+            "id": stage.id, "name": stage.name,
+            "description": stage.description, "order": stage.order,
+            "type": stage.type,
+        },
+        "puzzle": {
+            "id": puzzle.id, "title": puzzle.title,
+            "description": puzzle.description, "type": puzzle.type,
+            "options": puzzle.config.get("options", []) if puzzle.type == "MULTIPLE_CHOICE" else [],
+            "max_attempts": puzzle.max_attempts,
+            "attempts_used": progress.attempts,
+            "attempts_remaining": (puzzle.max_attempts - progress.attempts) if puzzle.max_attempts else None,
+        },
+        "hint": None if hint is None else {
+            "id": hint.id, "order": hint.order,
+            "penalty_seconds": hint.penalty_seconds,
+            "penalty_points": hint.penalty_points,
+        },
+        "progress": {
+            "total_stages": total, "completed_stages": completed,
+            "percentage": round(100 * completed / total) if total else 0,
+        },
+    })
+
+
+@login_required
+@require_POST
+def api_session_submit(request, pk):
+    """Envía la respuesta al puzzle actual.
+
+    Body JSON: {"puzzle_id": <int>, "answer": <str>}
+
+    Devuelve:
+        {"ok": true, "is_correct": <bool>, "completed": <bool>,
+         "failed": <bool>, "session_status": "<status>"}
+    """
+    session = owned(request, pk)
+    expire_session_if_needed(session)
+
+    if session.status != UserEscapeSession.Status.PLAYING:
+        return JsonResponse({
+            "ok": False, "error": "La partida ya no está activa",
+            "status": session.status,
+        }, status=400)
+
+    try:
+        data = json.loads(request.body or b"{}")
+    except ValueError:
+        return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
+
+    puzzle_id = data.get("puzzle_id")
+    answer = data.get("answer", "")
+
+    # Validación defensiva de la respuesta
+    if isinstance(answer, (int, float)):
+        answer = str(answer)
+    if not isinstance(answer, str) or not answer.strip():
+        return JsonResponse({"ok": False, "error": "La respuesta no puede estar vacía"}, status=400)
+    if len(answer) > MAX_ANSWER_LENGTH:
+        return JsonResponse({"ok": False, "error": f"Respuesta demasiado larga (máximo {MAX_ANSWER_LENGTH} caracteres)"}, status=400)
+
+    stage = session.current_stage
+    if stage is None:
+        return JsonResponse({"ok": False, "error": "La sesión no tiene fase actual"}, status=409)
+
+    puzzle = stage.puzzles.order_by("order").first()
+    if puzzle is None:
+        return JsonResponse({"ok": False, "error": "La fase actual no tiene puzzle"}, status=409)
+
+    if str(puzzle.pk) != str(puzzle_id):
+        return JsonResponse({
+            "ok": False, "error": "La fase ha cambiado. Recarga la escena.",
+        }, status=409)
+
+    result = register_attempt(session=session, puzzle=puzzle, answer=answer)
+    session.refresh_from_db()
+
+    return JsonResponse({
+        "ok": True,
+        "is_correct": result["is_correct"],
+        "completed": result["completed"],
+        "failed": result["failed"],
+        "session_status": session.status,
+    })
+
+
+@login_required
+@require_POST
+def api_session_hint(request, pk):
+    """Usa la siguiente pista disponible en la fase actual.
+
+    Devuelve:
+        {"ok": true, "hint": {id, order, text, penalty_seconds, penalty_points}}
+    """
+    session = owned(request, pk)
+    expire_session_if_needed(session)
+
+    if session.status != UserEscapeSession.Status.PLAYING:
+        return JsonResponse({"ok": False, "error": "Partida no activa"}, status=400)
+
+    stage = session.current_stage
+    if stage is None:
+        return JsonResponse({"ok": False, "error": "La sesión no tiene fase actual"}, status=409)
+
+    hint = get_available_hint(session, stage)
+    if hint is None:
+        return JsonResponse({"ok": False, "error": "No hay pistas disponibles"}, status=404)
+
+    applied = use_hint(session, hint)
+    if not applied:
+        return JsonResponse({"ok": False, "error": "La pista no puede usarse"}, status=400)
+
+    return JsonResponse({
+        "ok": True,
+        "hint": {
+            "id": hint.id, "order": hint.order, "text": hint.text,
+            "penalty_seconds": hint.penalty_seconds,
+            "penalty_points": hint.penalty_points,
+        },
+    })
+
+
+@login_required
+@require_POST
+def api_session_abandon(request, pk):
+    """Abandona la partida actual (la marca ABANDONED y la liquida).
+
+    Idempotente: si ya está terminada, devuelve el estado tal cual.
+    """
+    session = owned(request, pk)
+
+    # Si ya expiró por tiempo, services.py la marca FAILED
+    expire_session_if_needed(session)
+
+    if session.status == UserEscapeSession.Status.PLAYING:
+        session.status = UserEscapeSession.Status.ABANDONED
+        session.finished_at = timezone.now()
+        session.save(update_fields=["status", "finished_at", "updated_at"])
+        try:
+            settle_session(session, reason=EscapeSettlement.Reason.ABANDONED)
+        except ValueError:
+            # Carrera: la sesión acaba de pasar a otro estado. Silenciable.
+            session.refresh_from_db()
+
+    return JsonResponse({"ok": True, "status": session.status})
