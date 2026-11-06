@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
-from accounts.decorators import role_required
+from apps.users.decorators import role_required
 
 from .forms import LoginForm, RegisterForm
 from .models import ProfileUser
@@ -77,6 +77,7 @@ def delete_account_view(request):
         logout(request)
         return redirect('accounts:login')
     return redirect('accounts:profile')
+
 
 
 def logout_view(request):

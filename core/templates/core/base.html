@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ducky Quiz Arenas</title>
+  <title>{% block title %}Ducky Quiz Arenas{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% block extra_head %}{% endblock %}
 </head>
 <body class="{% if request.path|slice:':9' == '/accounts/' %}auth-page{% endif %}">
   <header class="topbar">
-    <a class="brand" href="#inicio" aria-label="Ducky Quiz Arenas">
+    <a class="brand" href="/" aria-label="Ducky Quiz Arenas">
       <span class="brand-mark">DQ</span>
       <span><strong>DUCKY</strong><small>QUIZ ARENAS</small></span>
     </a>
@@ -17,11 +18,11 @@
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
 
     <nav class="nav" id="mainNav">
-      <a href="#inicio" class="active">Inicio</a>
+      <a href="/" class="active">Inicio</a>
       <a href="#quizzes">Quizzes</a>
       <a href="#ducky">Mi Ducky</a>
       <a href="#shop">Tienda</a>
-      <a href="#challenges">Retos</a>
+      <a href="{% url 'escape_arenas:room_list' %}">Escape Arenas</a>
       <a href="#arena">Arena</a>
 
       
@@ -29,9 +30,9 @@
     {% if request.user.is_authenticated %}
     <button class="profile-button" id="profileButton">
       <span class="avatar">DM</span>
-      <span class="profile-copy"><strong>{{ request.user.username }}</strong><small>Alumno · Nv. 5</small></span>
+      <span class="profile-copy"><strong>{{ request.user.username }}</strong><small>Mi cuenta</small></span>
     </button>
-    <a href="{% url 'accounts:logout' %}" class="btn auth-btn secondary">Salir</a>
+    <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="btn auth-btn secondary">Salir</button></form>
 
     {% else %}
     <div class="auth-actions">
@@ -43,8 +44,14 @@
     
   </header>
 {% block main %}
-{% endblock %}  
   <main id="inicio">
+    {% if messages %}
+    <ul class="messages">
+      {% for m in messages %}
+        <li class="{{ m.tags }}">{{ m }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <section class="hero">
       <div class="hero-copy">
         <span class="eyebrow">APRENDE · COMPITE · GANA</span>
@@ -143,6 +150,7 @@
     </section>
   </main>
 
+{% endblock %}
   <footer>
     <strong>Ducky Quiz Arenas</strong>
     <span>Aprende · Compite · Gana</span>
@@ -164,5 +172,6 @@
 
   <div class="toast" id="toast" role="status"></div>
   <script src="{% static 'js/app.js' %}"></script>
+{% block extra_scripts %}{% endblock %}
 </body>
 </html>
